@@ -17,7 +17,7 @@ const AnimatedSection = ({
   anim = 'fade-up',
   delay,
   dur,
-  threshold = 0.12,
+  threshold = 0.05,
   className = '',
   children,
   style,
@@ -36,7 +36,7 @@ const AnimatedSection = ({
           observer.unobserve(el);
         }
       },
-      { threshold, rootMargin: '0px 0px -50px 0px' }
+      { threshold, rootMargin: '50px 0px 50px 0px' }
     );
 
     observer.observe(el);

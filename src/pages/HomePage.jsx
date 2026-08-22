@@ -165,7 +165,7 @@ const HomePage = () => {
       {/* Featured Tour Packages Slider Section */}
       <section className="featured-packages-section">
         <div className="container">
-          <AnimatedSection anim="fade-up" className="section-header-flex">
+          <div className="section-header-flex">
             <div>
               <div className="section-tag">CURATED HOLIDAYS</div>
               <h2 className="section-title section-title-left">
@@ -178,7 +178,7 @@ const HomePage = () => {
             <Link to="/packages" className="btn-secondary view-all-link-btn">
               Browse All {tourPackages.length} Packages <FaArrowRight />
             </Link>
-          </AnimatedSection>
+          </div>
 
           {/* Auto Scrolling Slider Track */}
           <div 
