@@ -7,6 +7,8 @@
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
+  opacity: 0.55;
+  transition: opacity 0.4s ease;
 }
 
 /* SVG Flight Trail Arc */
@@ -21,7 +23,7 @@
 .flight-arc-path {
   stroke-dasharray: 4 3;
   animation: dashAnimation 1.5s linear infinite;
-  opacity: 0.85;
+  opacity: 0.55;
 }
 
 @keyframes dashAnimation {
