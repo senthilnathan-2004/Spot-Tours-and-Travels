@@ -220,16 +220,38 @@
 
 .conf-wa-btn {
   width: 100%;
-  padding: 14px 0;
+  padding: 14px 20px;
   font-size: 1.05rem;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
+  text-align: center;
+  line-height: 1.35;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.conf-wa-btn .conf-btn-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
 }
 
 .conf-print-btn {
   width: 100%;
-  padding: 12px 0;
+  padding: 13px 20px;
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.conf-print-btn .conf-btn-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
 }
 
 .conf-home-link {
@@ -372,6 +394,29 @@
   .step-col {
     padding: 12px 10px;
     border-radius: 10px;
+  }
+  .conf-action-buttons {
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .conf-wa-btn {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .conf-wa-btn .conf-btn-icon {
+    font-size: 1.25rem;
+  }
+  .conf-print-btn {
+    padding: 11px 14px;
+    font-size: 0.88rem;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .conf-print-btn .conf-btn-icon {
+    font-size: 1rem;
   }
   .conf-support-footer {
     font-size: 0.8rem;

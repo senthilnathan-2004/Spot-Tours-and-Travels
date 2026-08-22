@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MdVisibility, MdClose, MdPhone, MdRefresh, MdMarkEmailRead, MdCheckCircle } from 'react-icons/md';
+import { 
+  MdVisibility, 
+  MdClose, 
+  MdPhone, 
+  MdRefresh, 
+  MdDeleteOutline, 
+  MdFileDownload, 
+  MdMarkEmailRead, 
+  MdCheckCircle, 
+  MdEmail,
+  MdSwapVert
+} from 'react-icons/md';
 import { FaWhatsapp } from 'react-icons/fa';
 import { api } from '../utils/api.js';
 import AdminAlert from '../components/AdminAlert.jsx';
@@ -18,6 +29,60 @@ const STATUSES = [
   { id: 'resolved', label: 'Resolved' }
 ];
 
+function formatReceivedDate(dateVal) {
+  if (!dateVal) return { dateStr: '—', timeStr: '', isRecent: false, tag: '' };
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return { dateStr: String(dateVal), timeStr: '', isRecent: false, tag: '' };
+  
+  const now = new Date();
+  const isToday = d.toDateString() === now.toDateString();
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  const isYesterday = d.toDateString() === yesterday.toDateString();
+
+  const timeStr = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  const dateStr = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+  if (isToday) return { dateStr, timeStr, isRecent: true, tag: 'Today' };
+  if (isYesterday) return { dateStr, timeStr, isRecent: true, tag: 'Yesterday' };
+  return { dateStr, timeStr, isRecent: false, tag: '' };
+}
+
+function exportEnquiriesToCSV(enquiriesList) {
+  if (!enquiriesList || enquiriesList.length === 0) return;
+  const headers = [
+    'Customer Name',
+    'Phone Number',
+    'Email Address',
+    'Destination Interest',
+    'Expected Travel Date',
+    'Status',
+    'Received Timestamp',
+    'Requirements / Message'
+  ];
+
+  const rows = enquiriesList.map(e => [
+    `"${(e.name || '').replace(/"/g, '""')}"`,
+    `"${e.phone || ''}"`,
+    `"${e.email || ''}"`,
+    `"${(e.destination || '').replace(/"/g, '""')}"`,
+    `"${e.travelDate || ''}"`,
+    `"${(e.status || 'new').toUpperCase()}"`,
+    `"${new Date(e.submittedAt || e.createdAt || Date.now()).toLocaleString('en-IN')}"`,
+    `"${(e.message || '').replace(/"/g, '""')}"`
+  ]);
+
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `Spot_Tours_Enquiries_${new Date().toISOString().slice(0, 10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 export default function Enquiries() {
   const location = useLocation();
   const urlStatus = new URLSearchParams(location.search).get('status') || 'all';
@@ -28,13 +93,15 @@ export default function Enquiries() {
   const [selected, setSelected] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
   const [search, setSearch] = useState('');
+  const [dateSort, setDateSort] = useState('desc');
+  const [selectedIds, setSelectedIds] = useState([]);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const params = { limit: 50 };
+      const params = { limit: 100 };
       if (filter !== 'all') params.status = filter;
       const data = await api.getEnquiries(params);
       setEnquiries(data.enquiries || []);
@@ -47,15 +114,41 @@ export default function Enquiries() {
   }, [filter]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { setSelectedIds([]); }, [filter]);
 
-  const filtered = search
-    ? enquiries.filter(e =>
-        e.name?.toLowerCase().includes(search.toLowerCase()) ||
-        e.phone?.includes(search) ||
-        e.destination?.toLowerCase().includes(search.toLowerCase()) ||
-        e.message?.toLowerCase().includes(search.toLowerCase())
-      )
-    : enquiries;
+  const filtered = enquiries
+    .filter(e => {
+      if (!search) return true;
+      const q = search.toLowerCase();
+      return (
+        e.name?.toLowerCase().includes(q) ||
+        e.phone?.includes(q) ||
+        e.email?.toLowerCase().includes(q) ||
+        e.destination?.toLowerCase().includes(q) ||
+        e.message?.toLowerCase().includes(q)
+      );
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.submittedAt || a.createdAt || 0).getTime();
+      const dateB = new Date(b.submittedAt || b.createdAt || 0).getTime();
+      return dateSort === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+
+  const isAllSelected = filtered.length > 0 && selectedIds.length === filtered.length;
+
+  function toggleSelectAll() {
+    if (isAllSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filtered.map(e => e._id));
+    }
+  }
+
+  function toggleSelect(id) {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  }
 
   async function updateStatus(id, status) {
     setUpdatingId(id);
@@ -69,6 +162,53 @@ export default function Enquiries() {
       setError(err.message || 'Failed to update enquiry');
     } finally {
       setUpdatingId(null);
+    }
+  }
+
+  async function handleBulkStatus(status) {
+    if (selectedIds.length === 0) return;
+    setLoading(true);
+    try {
+      await api.bulkUpdateEnquiryStatus(selectedIds, status);
+      setSuccess(`Updated ${selectedIds.length} enquiries to ${status.toUpperCase()}!`);
+      setTimeout(() => setSuccess(''), 3500);
+      setSelectedIds([]);
+      load();
+    } catch (err) {
+      setError(err.message || 'Failed to update selected enquiries');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleBulkDelete() {
+    if (selectedIds.length === 0) return;
+    if (!window.confirm(`Are you sure you want to permanently delete ${selectedIds.length} selected enquiries?`)) return;
+    setLoading(true);
+    try {
+      await api.bulkDeleteEnquiries(selectedIds);
+      setSuccess(`Deleted ${selectedIds.length} enquiries successfully.`);
+      setTimeout(() => setSuccess(''), 3500);
+      setSelectedIds([]);
+      load();
+    } catch (err) {
+      setError(err.message || 'Failed to delete enquiries');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleDeleteSingle(id, name) {
+    if (!window.confirm(`Delete enquiry from ${name || 'customer'}? This action cannot be undone.`)) return;
+    try {
+      await api.deleteEnquiry(id);
+      setSuccess('Enquiry deleted successfully.');
+      setTimeout(() => setSuccess(''), 3000);
+      if (selected?._id === id) setSelected(null);
+      setSelectedIds(prev => prev.filter(x => x !== id));
+      load();
+    } catch (err) {
+      setError(err.message || 'Failed to delete enquiry');
     }
   }
 
@@ -94,12 +234,21 @@ export default function Enquiries() {
             CONTACT <span>ENQUIRIES</span>
           </h1>
           <p className="adm-page-subtitle">
-            {total} total client submissions received via your website contact form.
+            {total} total client submissions organized chronologically. Multi-select rows to batch resolve, update, delete, or export.
           </p>
         </div>
-        <button className="adm-btn adm-btn-ghost" onClick={load} title="Refresh enquiries list">
-          <MdRefresh /> Refresh
-        </button>
+        <div className="adm-page-actions" style={{ display: 'flex', gap: 8 }}>
+          <button 
+            className="adm-btn adm-btn-ghost" 
+            onClick={() => exportEnquiriesToCSV(enquiries)} 
+            title="Export all visible leads to CSV"
+          >
+            <MdFileDownload /> Export CSV
+          </button>
+          <button className="adm-btn adm-btn-ghost" onClick={load} title="Refresh enquiries list">
+            <MdRefresh /> Refresh
+          </button>
+        </div>
       </div>
 
       <AdminAlert 
@@ -108,15 +257,29 @@ export default function Enquiries() {
       />
 
       {/* Filter Tabs & Search */}
-      <div className="adm-filters">
+      <div className="adm-filters" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
         <input
           type="text"
           className="adm-search-input"
-          placeholder="Search by customer name, phone, destination, or note..."
+          placeholder="Search by customer name, phone, email, destination, or note..."
           value={search}
           onChange={e => setSearch(e.target.value)}
+          style={{ flex: '1 1 280px' }}
         />
-        <div className="adm-filter-tabs">
+
+        {/* Date Sort Toggle */}
+        <button
+          type="button"
+          onClick={() => setDateSort(s => s === 'desc' ? 'asc' : 'desc')}
+          className="adm-btn adm-btn-ghost"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', whiteSpace: 'nowrap' }}
+          title="Toggle date order"
+        >
+          <MdSwapVert style={{ fontSize: '1.2rem' }} />
+          <span>Date: {dateSort === 'desc' ? 'Newest First' : 'Oldest First'}</span>
+        </button>
+
+        <div className="adm-filter-tabs" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {STATUSES.map(s => (
             <button
               key={s.id}
@@ -144,75 +307,184 @@ export default function Enquiries() {
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>Client Contact</th>
-                  <th>Destination Interest</th>
-                  <th>Preferred Date</th>
+                  <th style={{ width: 44, textAlign: 'center' }}>
+                    <input 
+                      type="checkbox" 
+                      className="adm-checkbox" 
+                      checked={isAllSelected}
+                      onChange={toggleSelectAll}
+                      title="Select All"
+                    />
+                  </th>
                   <th>Received Date</th>
+                  <th>Customer Name</th>
+                  <th>Destination Interest</th>
+                  <th>Expected Date</th>
+                  <th>Message Preview</th>
                   <th>Status</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map(e => (
-                  <tr key={e._id} style={e.status === 'new' ? { background: 'rgba(216, 58, 86, 0.04)' } : {}}>
-                    <td>
-                      <div style={{ fontWeight: 700, color: 'var(--adm-text-main)', fontSize: '0.92rem', display: 'flex', alignItems: 'center', gap: 6 }}>
-                        {e.status === 'new' && (
-                          <span style={{ width: 8, height: 8, background: 'var(--adm-primary)', borderRadius: '50%', flexShrink: 0 }} />
+                {filtered.map(e => {
+                  const isSelected = selectedIds.includes(e._id);
+                  const dt = formatReceivedDate(e.submittedAt || e.createdAt);
+
+                  return (
+                    <tr key={e._id} className={isSelected ? 'adm-row-selected' : ''}>
+                      <td style={{ textAlign: 'center' }}>
+                        <input 
+                          type="checkbox" 
+                          className="adm-checkbox" 
+                          checked={isSelected}
+                          onChange={() => toggleSelect(e._id)}
+                        />
+                      </td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          {dt.tag && (
+                            <span className="adm-badge adm-badge-confirmed" style={{ fontSize: '0.68rem', padding: '2px 6px', fontWeight: 800 }}>
+                              {dt.tag}
+                            </span>
+                          )}
+                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--adm-text-main)' }}>
+                            {dt.dateStr}
+                          </span>
+                        </div>
+                        {dt.timeStr && (
+                          <div style={{ fontSize: '0.75rem', color: 'var(--adm-text-muted)', marginTop: 2 }}>
+                            {dt.timeStr}
+                          </div>
                         )}
-                        {e.name}
-                      </div>
-                      <div style={{ fontSize: '0.78rem', color: 'var(--adm-text-muted)', marginTop: 2 }}>
-                        📞 {e.phone} {e.email && `• ${e.email}`}
-                      </div>
-                    </td>
-                    <td>
-                      <div style={{ fontWeight: 600, color: '#334155', fontSize: '0.88rem' }}>
-                        📍 {e.destination || 'General Travel Advice'}
-                      </div>
-                    </td>
-                    <td style={{ fontSize: '0.85rem', color: '#64748B' }}>
-                      {e.travelDate || 'Flexible'}
-                    </td>
-                    <td style={{ fontSize: '0.8rem', color: '#64748B', whiteSpace: 'nowrap' }}>
-                      {new Date(e.submittedAt || e.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </td>
-                    <td>
-                      <span className={`adm-badge ${STATUS_BADGE[e.status] || ''}`}>
-                        {e.status}
-                      </span>
-                    </td>
-                    <td style={{ textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: 6 }}>
-                        <button className="adm-btn adm-btn-ghost adm-btn-icon" onClick={() => openView(e)} title="View Enquiry Details">
-                          <MdVisibility />
-                        </button>
-                        <a
-                          href={waLink(e)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="adm-btn adm-btn-icon"
-                          style={{ background: '#25D366', color: '#FFFFFF', border: 'none' }}
-                          title="Reply on WhatsApp"
-                        >
-                          <FaWhatsapp style={{ fontSize: '1.1rem' }} />
-                        </a>
-                        <a
-                          href={`tel:${e.phone}`}
-                          className="adm-btn adm-btn-ghost adm-btn-icon"
-                          title="Call Lead"
-                        >
-                          <MdPhone />
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>
+                        <div className="adm-customer-name">
+                          {e.name}
+                        </div>
+                        <div className="adm-customer-sub">
+                          📞 {e.phone} {e.email ? `• ${e.email}` : ''}
+                        </div>
+                      </td>
+                      <td>
+                        <span style={{ fontWeight: 600, color: 'var(--adm-secondary)', fontSize: '0.88rem' }}>
+                          {e.destination || 'Custom Vacation'}
+                        </span>
+                      </td>
+                      <td style={{ fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
+                        {e.travelDate || 'Flexible'}
+                      </td>
+                      <td>
+                        <div style={{ maxWidth: 220, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.82rem', color: 'var(--adm-text-muted)' }}>
+                          {e.message || '—'}
+                        </div>
+                      </td>
+                      <td>
+                        <span className={`adm-badge ${STATUS_BADGE[e.status] || ''}`}>
+                          {e.status}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', gap: 6 }}>
+                          <button 
+                            className="adm-btn adm-btn-ghost adm-btn-icon" 
+                            onClick={() => openView(e)} 
+                            title="View Enquiry Details"
+                          >
+                            <MdVisibility />
+                          </button>
+                          
+                          <a
+                            href={waLink(e)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="adm-btn adm-btn-icon"
+                            style={{ background: '#25D366', color: '#FFFFFF', border: 'none' }}
+                            title="Reply on WhatsApp"
+                          >
+                            <FaWhatsapp style={{ fontSize: '1.1rem' }} />
+                          </a>
+                          
+                          <a
+                            href={`tel:${e.phone}`}
+                            className="adm-btn adm-btn-ghost adm-btn-icon"
+                            title="Call Lead"
+                          >
+                            <MdPhone />
+                          </a>
+
+                          <button
+                            className="adm-btn adm-btn-ghost adm-btn-icon"
+                            onClick={() => handleDeleteSingle(e._id, e.name)}
+                            title="Delete Enquiry"
+                            style={{ color: '#EF4444' }}
+                          >
+                            <MdDeleteOutline />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         )}
       </div>
+
+      {/* Floating Multi-Select Bulk Action Toolbar */}
+      {selectedIds.length > 0 && (
+        <div className="adm-bulk-bar">
+          <span className="adm-bulk-count">
+            ✓ {selectedIds.length} Selected
+          </span>
+          
+          <div className="adm-bulk-actions">
+            <button 
+              className="adm-bulk-btn btn-complete"
+              onClick={() => handleBulkStatus('read')}
+              title="Mark In Review"
+            >
+              <MdMarkEmailRead /> In Review
+            </button>
+            <button 
+              className="adm-bulk-btn btn-confirm"
+              onClick={() => handleBulkStatus('resolved')}
+              title="Mark Resolved"
+            >
+              <MdCheckCircle /> Resolved
+            </button>
+            <button 
+              className="adm-bulk-btn btn-cancel"
+              onClick={() => handleBulkStatus('new')}
+              title="Mark as New"
+            >
+              <MdEmail /> New
+            </button>
+            <button 
+              className="adm-bulk-btn btn-export"
+              onClick={() => exportEnquiriesToCSV(enquiries.filter(e => selectedIds.includes(e._id)))}
+              title="Export Selected to CSV"
+            >
+              <MdFileDownload /> Export
+            </button>
+            <button 
+              className="adm-bulk-btn btn-delete"
+              onClick={handleBulkDelete}
+              title="Delete Selected"
+            >
+              <MdDeleteOutline /> Delete
+            </button>
+          </div>
+
+          <button 
+            className="adm-bulk-close" 
+            onClick={() => setSelectedIds([])}
+            title="Deselect All"
+          >
+            <MdClose />
+          </button>
+        </div>
+      )}
 
       {/* Enquiry Detail Modal */}
       {selected && (
@@ -248,7 +520,7 @@ export default function Enquiries() {
               {/* Status Updater */}
               <div className="adm-status-box">
                 <div className="adm-status-title">
-                  Change Status
+                  Change Status (Auto Customer Email)
                 </div>
                 <div className="adm-status-buttons">
                   {[

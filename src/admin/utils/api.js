@@ -93,6 +93,9 @@ export const api = {
   getBookingStats: () => request('/api/bookings/stats'),
   getBooking: (id) => request(`/api/bookings/${id}`),
   updateBookingStatus: (id, status) => request(`/api/bookings/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+  bulkUpdateBookingStatus: (ids, status) => request('/api/bookings/bulk-status', { method: 'POST', body: JSON.stringify({ ids, status }) }),
+  deleteBooking: (id) => request(`/api/bookings/${id}`, { method: 'DELETE' }),
+  bulkDeleteBookings: (ids) => request('/api/bookings/bulk-delete', { method: 'POST', body: JSON.stringify({ ids }) }),
   createBooking: (data) => request('/api/bookings', { method: 'POST', body: JSON.stringify(data) }),
 
   // Enquiries
@@ -102,6 +105,9 @@ export const api = {
   },
   getEnquiryStats: () => request('/api/enquiries/stats'),
   updateEnquiryStatus: (id, status) => request(`/api/enquiries/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
+  bulkUpdateEnquiryStatus: (ids, status) => request('/api/enquiries/bulk-status', { method: 'POST', body: JSON.stringify({ ids, status }) }),
+  deleteEnquiry: (id) => request(`/api/enquiries/${id}`, { method: 'DELETE' }),
+  bulkDeleteEnquiries: (ids) => request('/api/enquiries/bulk-delete', { method: 'POST', body: JSON.stringify({ ids }) }),
   createEnquiry: (data) => request('/api/enquiries', { method: 'POST', body: JSON.stringify(data) }),
 
   // Content

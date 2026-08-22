@@ -387,6 +387,158 @@
   white-space: nowrap;
 }
 
+.adm-table tbody tr.adm-row-selected {
+  background-color: #EFF6FF !important;
+}
+
+.adm-table tbody tr.adm-row-selected td {
+  border-bottom-color: #BFDBFE;
+}
+
+.adm-checkbox {
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  accent-color: #0E7490;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* ── Floating Bulk Action Toolbar ── */
+.adm-bulk-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0F172A;
+  color: #FFFFFF;
+  padding: 10px 18px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  animation: adm-pop-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.adm-bulk-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.adm-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.adm-bulk-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.adm-bulk-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.adm-bulk-btn.btn-confirm {
+  background: #059669;
+  border-color: #10B981;
+}
+
+.adm-bulk-btn.btn-confirm:hover {
+  background: #047857;
+}
+
+.adm-bulk-btn.btn-complete {
+  background: #0E7490;
+  border-color: #06B6D4;
+}
+
+.adm-bulk-btn.btn-complete:hover {
+  background: #0891B2;
+}
+
+.adm-bulk-btn.btn-cancel {
+  background: #D97706;
+  border-color: #F59E0B;
+}
+
+.adm-bulk-btn.btn-cancel:hover {
+  background: #B45309;
+}
+
+.adm-bulk-btn.btn-delete {
+  background: #DC2626;
+  border-color: #EF4444;
+}
+
+.adm-bulk-btn.btn-delete:hover {
+  background: #B91C1C;
+}
+
+.adm-bulk-btn.btn-export {
+  background: #2563EB;
+  border-color: #3B82F6;
+}
+
+.adm-bulk-btn.btn-export:hover {
+  background: #1D4ED8;
+}
+
+.adm-bulk-close {
+  background: transparent;
+  color: #94A3B8;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.adm-bulk-close:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+  .adm-bulk-bar {
+    bottom: 16px;
+    padding: 8px 12px;
+    gap: 8px;
+    border-radius: 16px;
+  }
+  .adm-bulk-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
+
 /* ── Status Badges ───────────────────────────────────────── */
 .adm-badge {
   display: inline-flex;

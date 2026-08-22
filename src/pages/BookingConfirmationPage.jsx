@@ -162,11 +162,13 @@ Please confirm our itinerary and send hotel confirmation voucher.`;
               rel="noreferrer"
               className="btn-whatsapp conf-wa-btn"
             >
-              <FaWhatsapp /> Send to WhatsApp for Instant Confirmation
+              <FaWhatsapp className="conf-btn-icon" />
+              <span>Send to WhatsApp for Instant Confirmation</span>
             </a>
 
             <button onClick={handlePrint} className="btn-secondary conf-print-btn">
-              <FaPrint /> Print / Save Voucher Slip
+              <FaPrint className="conf-btn-icon" />
+              <span>Print / Save Voucher Slip</span>
             </button>
 
             <Link to="/" className="conf-home-link">
