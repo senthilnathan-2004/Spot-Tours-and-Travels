@@ -33,7 +33,7 @@
   }
 }
 
-/* 3D Glowing Globe Target Node */
+/* 3D Glowing Globe Target Node (Foreground layer so logo hides behind it) */
 .globe-beacon-node {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -42,7 +42,7 @@
   align-items: center;
   justify-content: center;
   transition: left 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), top 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 5; /* Globe is in front */
+  z-index: 8;
 }
 
 /* Rounder Glow Radar Rings */
@@ -51,7 +51,7 @@
   border-radius: 50%;
   pointer-events: none;
   border: 1.5px solid rgba(56, 189, 248, 0.6);
-  box-shadow: 0 0 16px rgba(34, 197, 94, 0.4), inset 0 0 12px rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.5), inset 0 0 12px rgba(56, 189, 248, 0.3);
 }
 
 .ring-1 {
@@ -76,31 +76,31 @@
   0% {
     transform: scale(0.4);
     opacity: 0.9;
-    border-color: rgba(34, 197, 94, 0.9);
+    border-color: rgba(56, 189, 248, 0.9);
   }
   50% {
     opacity: 0.6;
-    border-color: rgba(56, 189, 248, 0.8);
+    border-color: rgba(251, 191, 36, 0.7);
   }
   100% {
     transform: scale(1.6);
     opacity: 0;
-    border-color: rgba(34, 197, 94, 0);
+    border-color: rgba(236, 72, 153, 0);
   }
 }
 
-/* Realistic 3D Blue Ocean & Green Continent Earth Globe */
+/* Globe Sphere Wrap */
 .globe-sphere-wrap {
   position: relative;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 32%, #0284c7 0%, #0369a1 45%, #0c4a6e 85%, #082f49 100%);
+  background: radial-gradient(circle at 35% 35%, #0284c7 0%, #0369a1 40%, #0f172a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 24px rgba(56, 189, 248, 0.75), 0 0 45px rgba(34, 197, 94, 0.4), inset -2px -2px 8px rgba(0, 0, 0, 0.65), inset 2px 2px 8px rgba(255, 255, 255, 0.6);
-  border: 1.5px solid rgba(186, 230, 253, 0.9);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.8), 0 0 45px rgba(14, 165, 233, 0.4), inset -2px -2px 8px rgba(0, 0, 0, 0.6), inset 2px 2px 8px rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
   animation: floatGlobe 4s ease-in-out infinite alternate;
 }
 
@@ -130,66 +130,18 @@
   }
 }
 
-/* Realistic Emerald Green Landmasses */
 .globe-3d-icon {
-  font-size: 1.85rem;
-  color: #22c55e;
-  filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.95)) drop-shadow(0 0 8px rgba(22, 163, 74, 0.8));
+  font-size: 1.8rem;
+  color: #38bdf8;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.9));
 }
 
 .globe-radial-glow {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 75%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, transparent 70%);
   pointer-events: none;
-}
-
-/* Destination Floating Badge */
-.dest-floating-badge {
-  margin-top: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-  white-space: nowrap;
-  transform: translateY(0);
-  transition: all 0.35s ease;
-}
-
-.dest-pin-icon {
-  color: #ef4444;
-  font-size: 0.75rem;
-  animation: bouncePin 1.5s infinite;
-}
-
-@keyframes bouncePin {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-3px);
-  }
-}
-
-.dest-city-text {
-  font-family: 'Oswald', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-.badge-arrived {
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(15, 23, 42, 0.95));
-  border-color: #fbbf24;
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
 }
 
 /* Landing Pulse State on Globe */
@@ -210,7 +162,7 @@
   }
 }
 
-/* Jet Flight Airplane Node */
+/* Brand Logo Traveler Node (Docks smoothly behind the globe) */
 .jet-flight-node {
   position: absolute;
   width: 44px;
@@ -218,31 +170,58 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
   transform-origin: center center;
-  transition: transform 0.5s ease;
+  will-change: left, top, transform;
 }
 
-.plane-in-flight {
-  transition: left 3.4s cubic-bezier(0.45, 0.05, 0.55, 0.95), top 3.4s cubic-bezier(0.45, 0.05, 0.55, 0.95), transform 0.4s ease;
-}
-
-.plane-docked {
-  transition: transform 0.3s ease;
-}
-
-.jet-plane-body {
+/* Premium Brand Logo Emblem with Metallic Glowing Ring */
+.travel-logo-emblem {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 2px;
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #fbbf24 100%);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.9), 0 0 28px rgba(251, 191, 36, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 20px rgba(56, 189, 248, 0.9));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.jet-svg-icon {
-  font-size: 1.9rem;
-  color: #ffffff;
-  transform: rotate(0deg);
+.travel-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.logo-glow-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
+  animation: rotateLogoGlow 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotateLogoGlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* When docked behind the globe */
+.plane-docked .travel-logo-emblem {
+  transform: scale(0.92);
+  opacity: 0.85;
 }
 
 /* Jet Exhaust & Trail Particles */
@@ -306,16 +285,17 @@
 /* Mobile & Tablet Responsive Adjustments */
 @media (max-width: 1024px) {
   .globe-sphere-wrap {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
   }
 
   .globe-3d-icon {
-    font-size: 1.55rem;
+    font-size: 1.6rem;
   }
 
-  .jet-svg-icon {
-    font-size: 1.65rem;
+  .travel-logo-emblem {
+    width: 36px;
+    height: 36px;
   }
 
   .ring-1 { width: 56px; height: 56px; }
@@ -325,25 +305,17 @@
 
 @media (max-width: 600px) {
   .globe-sphere-wrap {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
   }
 
   .globe-3d-icon {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
   }
 
-  .jet-svg-icon {
-    font-size: 1.45rem;
-  }
-
-  .dest-floating-badge {
-    padding: 3px 8px;
-    margin-top: 6px;
-  }
-
-  .dest-city-text {
-    font-size: 0.65rem;
+  .travel-logo-emblem {
+    width: 32px;
+    height: 32px;
   }
 
   .ring-1 { width: 48px; height: 48px; }
