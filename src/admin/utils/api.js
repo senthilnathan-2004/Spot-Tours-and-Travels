@@ -4,10 +4,16 @@ const BASE = import.meta.env.PROD
   : (import.meta.env.VITE_API_BASE_URL || '');
 
 async function request(path, options = {}) {
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('spot_admin_token') : null;
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    ...options.headers
+  };
   const res = await fetch(`${BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
     credentials: 'include',
-    ...options
+    ...options,
+    headers
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
@@ -16,8 +22,19 @@ async function request(path, options = {}) {
 
 export const api = {
   // Auth
-  login: (email, password) => request('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
-  logout: () => request('/api/auth/logout', { method: 'POST' }),
+  login: async (email, password) => {
+    const data = await request('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+    if (data.token && typeof localStorage !== 'undefined') {
+      localStorage.setItem('spot_admin_token', data.token);
+    }
+    return data;
+  },
+  logout: async () => {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('spot_admin_token');
+    }
+    return request('/api/auth/logout', { method: 'POST' });
+  },
   me: () => request('/api/auth/me'),
 
   // Packages
