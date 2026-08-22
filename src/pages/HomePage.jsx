@@ -17,6 +17,7 @@ import { tourPackages, destinationsList, agencyInfo } from '../data/travelData';
 import Services from '../components/Services';
 import Reviews from '../components/Reviews';
 import MapSection from '../components/MapSection';
+import OrbitShowcase from '../components/OrbitShowcase';
 import AnimatedSection from '../components/AnimatedSection';
 import '../components/Hero.css';
 import './HomePage.css';
@@ -266,6 +267,9 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* 360 Degree Infinite Orbit Showcase (180° Visible Arc Window) */}
+      <OrbitShowcase />
 
       {/* Destinations Grid */}
       <section className="home-destinations-section">

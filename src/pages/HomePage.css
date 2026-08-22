@@ -626,6 +626,11 @@
   .why-us-section {
     padding: 3.5rem 0;
   }
+
+  /* Show only 4 destination cards on mobile view */
+  .home-destinations-section .destinations-grid-modern .destination-modern-card:nth-child(n+5) {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {
