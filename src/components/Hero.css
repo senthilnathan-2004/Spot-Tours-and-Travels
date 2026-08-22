@@ -173,15 +173,39 @@
   color: white;
 }
 
-/* Tablet & Mobile Media Queries */
-@media (max-width: 1024px) {
+/* Tablet Media Queries (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
   .hero-section {
+    min-height: 70vh;
     background-position: center center;
     background-size: cover;
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .hero-content {
     width: 100%;
+  }
+
+  .hero-title {
+    font-size: clamp(3.4rem, 6.2vw, 4.4rem);
+    line-height: 1.08;
+    margin-bottom: 1.5rem;
+    max-width: 100%;
+  }
+
+  .hero-subtitle {
+    font-size: 1.22rem;
+    line-height: 1.65;
+    margin-bottom: 2.75rem; /* Spacious gap between text and buttons */
+    max-width: 90%;
+  }
+
+  .hero-cta-group {
+    margin-top: 0.5rem;
+    gap: 18px;
   }
 
   .hero-stats {
@@ -192,11 +216,13 @@
 @media (max-width: 768px) {
   .hero-section {
     margin-top: 60px;
+    min-height: 70vh;
     padding-top: 24px;
-    padding-bottom: 35px;
-    min-height: auto;
+    padding-bottom: 24px;
     background-position: center center;
     background-size: cover;
+    display: flex;
+    align-items: center;
   }
 
   .hero-overlay {
@@ -258,5 +284,62 @@
     padding: 12px 18px;
     font-size: 1rem;
     box-sizing: border-box;
+  }
+}
+
+/* Enhanced Desktop-Grade Styling for Tall Devices (Height > 740px) */
+@media (min-height: 741px) and (max-width: 768px) {
+  .hero-section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .hero-badge {
+    font-size: 0.85rem;
+    padding: 9px 16px;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 6.8vw, 3.2rem);
+    line-height: 1.12;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 2.25rem; /* Generous gap between text and buttons */
+  }
+
+  .hero-cta-group {
+    margin-top: 0.5rem;
+    gap: 14px;
+  }
+
+  .hero-btn,
+  .hero-whatsapp-btn {
+    padding: 14px 22px;
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-height: 741px) and (min-width: 769px) and (max-width: 1024px) {
+  .hero-title {
+    font-size: clamp(3.4rem, 6.2vw, 4.4rem);
+    line-height: 1.08;
+    margin-bottom: 1.65rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.65;
+    margin-bottom: 3rem; /* Spacious gap between text and buttons */
+  }
+
+  .hero-cta-group {
+    margin-top: 0.75rem;
+    gap: 18px;
   }
 }

@@ -1,0 +1,443 @@
+/* ==========================================================================
+   3D CoverFlow Perspective Gallery (Pure White Background)
+   ========================================================================== */
+
+.wave-gallery-section {
+  background-color: #ffffff;
+  padding: 5.5rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--card-border, rgba(15, 23, 42, 0.08));
+}
+
+.wave-header-left {
+  max-width: 780px;
+  margin-bottom: 2.5rem;
+}
+
+.wave-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14, 116, 144, 0.1);
+  color: var(--secondary, #0E7490);
+  border: 1px solid rgba(14, 116, 144, 0.2);
+  margin-bottom: 10px;
+}
+
+.wave-tag-icon {
+  color: var(--primary, #D83A56);
+}
+
+/* ==========================================================================
+   3D Perspective Stage & Carousel
+   ========================================================================== */
+
+.coverflow-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1320px;
+  height: 440px;
+  margin: 0 auto;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.coverflow-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base Card Wrapper */
+.coverflow-card-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 380px;
+  margin-top: -190px;
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.65s ease,
+              filter 0.65s ease,
+              box-shadow 0.65s ease;
+  cursor: pointer;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   3D Position Matrix (Exact Cover Flow Angles)
+   ========================================================================== */
+
+/* Center (Front & Facing Flat) */
+.coverflow-card-wrapper.card-center {
+  transform: translateX(-50%) translateZ(100px) rotateY(0deg) scale(1.06);
+  z-index: 20;
+  opacity: 1;
+  filter: brightness(1);
+  pointer-events: auto;
+}
+
+/* Immediate Left (Angled 3D towards Center) */
+.coverflow-card-wrapper.card-left-1 {
+  transform: translateX(calc(-50% - 250px)) translateZ(-20px) rotateY(42deg) scale(0.9);
+  z-index: 15;
+  opacity: 0.92;
+  filter: brightness(0.92);
+  pointer-events: auto;
+}
+
+/* Immediate Right (Angled 3D towards Center) */
+.coverflow-card-wrapper.card-right-1 {
+  transform: translateX(calc(-50% + 250px)) translateZ(-20px) rotateY(-42deg) scale(0.9);
+  z-index: 15;
+  opacity: 0.92;
+  filter: brightness(0.92);
+  pointer-events: auto;
+}
+
+/* Far Left */
+.coverflow-card-wrapper.card-left-2 {
+  transform: translateX(calc(-50% - 460px)) translateZ(-120px) rotateY(56deg) scale(0.74);
+  z-index: 10;
+  opacity: 0.65;
+  filter: brightness(0.75);
+  pointer-events: auto;
+}
+
+/* Far Right */
+.coverflow-card-wrapper.card-right-2 {
+  transform: translateX(calc(-50% + 460px)) translateZ(-120px) rotateY(-56deg) scale(0.74);
+  z-index: 10;
+  opacity: 0.65;
+  filter: brightness(0.75);
+  pointer-events: auto;
+}
+
+/* Outer Out of Bounds */
+.coverflow-card-wrapper.card-left-3,
+.coverflow-card-wrapper.card-right-3,
+.coverflow-card-wrapper.card-hidden {
+  transform: translateX(-50%) translateZ(-220px) scale(0.5);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.coverflow-card-wrapper.card-left-3 {
+  transform: translateX(calc(-50% - 620px)) translateZ(-200px) rotateY(65deg) scale(0.55);
+}
+
+.coverflow-card-wrapper.card-right-3 {
+  transform: translateX(calc(-50% + 620px)) translateZ(-200px) rotateY(-65deg) scale(0.55);
+}
+
+/* ==========================================================================
+   Card Styling
+   ========================================================================== */
+
+.coverflow-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #0f172a;
+  box-shadow: 0 16px 35px rgba(15, 23, 42, 0.16), 0 4px 10px rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--card-border, rgba(15, 23, 42, 0.1));
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.coverflow-card-wrapper.card-center .coverflow-card-inner {
+  box-shadow: 0 24px 50px rgba(14, 116, 144, 0.22), 0 6px 18px rgba(216, 58, 86, 0.12);
+  border-color: var(--secondary, #0E7490);
+}
+
+.coverflow-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Rating Badge */
+.coverflow-rating-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-main, #0f172a);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 3;
+}
+
+.coverflow-star-icon {
+  color: var(--accent, #F59E0B);
+  font-size: 0.72rem;
+}
+
+/* Bottom Overlay */
+.coverflow-card-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 24px 16px 16px;
+  background: linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.82) 45%, rgba(15, 23, 42, 0.96) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 3;
+}
+
+.coverflow-item-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #38bdf8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.coverflow-item-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coverflow-item-location {
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 2px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.coverflow-pin-icon {
+  color: var(--primary, #D83A56);
+  font-size: 0.72rem;
+}
+
+/* ==========================================================================
+   Navigation Buttons & Dots
+   ========================================================================== */
+
+.coverflow-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--card-border, rgba(15, 23, 42, 0.12));
+  color: var(--text-main, #0f172a);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+  transition: all 0.25s ease;
+  z-index: 25;
+}
+
+.coverflow-nav-btn:hover {
+  background: var(--secondary, #0E7490);
+  color: #ffffff;
+  border-color: var(--secondary, #0E7490);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.coverflow-nav-btn.btn-prev {
+  left: 20px;
+}
+
+.coverflow-nav-btn.btn-next {
+  right: 20px;
+}
+
+.coverflow-dots-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+
+.coverflow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.coverflow-dot.active {
+  width: 24px;
+  border-radius: 10px;
+  background: var(--secondary, #0E7490);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .coverflow-stage {
+    height: 390px;
+  }
+
+  .coverflow-card-wrapper {
+    width: 270px;
+    height: 330px;
+    margin-top: -165px;
+  }
+
+  .coverflow-card-wrapper.card-left-1 {
+    transform: translateX(calc(-50% - 190px)) translateZ(-20px) rotateY(38deg) scale(0.9);
+  }
+
+  .coverflow-card-wrapper.card-right-1 {
+    transform: translateX(calc(-50% + 190px)) translateZ(-20px) rotateY(-38deg) scale(0.9);
+  }
+
+  .coverflow-card-wrapper.card-left-2 {
+    transform: translateX(calc(-50% - 350px)) translateZ(-100px) rotateY(50deg) scale(0.72);
+  }
+
+  .coverflow-card-wrapper.card-right-2 {
+    transform: translateX(calc(-50% + 350px)) translateZ(-100px) rotateY(-50deg) scale(0.72);
+  }
+
+  .coverflow-nav-btn.btn-prev {
+    left: 8px;
+  }
+
+  .coverflow-nav-btn.btn-next {
+    right: 8px;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .wave-gallery-section {
+    padding: 3.5rem 0 2rem;
+  }
+
+  .wave-header-left {
+    margin-bottom: 1.5rem;
+    padding: 0 16px;
+  }
+
+  .coverflow-stage {
+    height: 320px;
+  }
+
+  .coverflow-card-wrapper {
+    width: 210px;
+    height: 270px;
+    margin-top: -135px;
+  }
+
+  .coverflow-card-wrapper.card-left-1 {
+    transform: translateX(calc(-50% - 130px)) translateZ(-20px) rotateY(35deg) scale(0.88);
+  }
+
+  .coverflow-card-wrapper.card-right-1 {
+    transform: translateX(calc(-50% + 130px)) translateZ(-20px) rotateY(-35deg) scale(0.88);
+  }
+
+  .coverflow-card-wrapper.card-left-2,
+  .coverflow-card-wrapper.card-right-2 {
+    opacity: 0.2;
+  }
+
+  .coverflow-card-inner {
+    border-radius: 16px;
+  }
+
+  .coverflow-item-title {
+    font-size: 0.95rem;
+  }
+
+  .coverflow-item-location {
+    font-size: 0.68rem;
+  }
+
+  .coverflow-rating-badge {
+    top: 8px;
+    right: 8px;
+    font-size: 0.68rem;
+    padding: 2px 6px;
+  }
+
+  .coverflow-nav-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .coverflow-nav-btn.btn-prev {
+    left: 4px;
+  }
+
+  .coverflow-nav-btn.btn-next {
+    right: 4px;
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .coverflow-stage {
+    height: 290px;
+  }
+
+  .coverflow-card-wrapper {
+    width: 180px;
+    height: 240px;
+    margin-top: -120px;
+  }
+
+  .coverflow-card-wrapper.card-left-1 {
+    transform: translateX(calc(-50% - 105px)) translateZ(-20px) rotateY(32deg) scale(0.86);
+  }
+
+  .coverflow-card-wrapper.card-right-1 {
+    transform: translateX(calc(-50% + 105px)) translateZ(-20px) rotateY(-32deg) scale(0.86);
+  }
+
+  .coverflow-item-title {
+    font-size: 0.86rem;
+  }
+}

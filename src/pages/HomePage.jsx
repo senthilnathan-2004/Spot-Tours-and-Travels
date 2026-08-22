@@ -18,6 +18,7 @@ import Services from '../components/Services';
 import Reviews from '../components/Reviews';
 import MapSection from '../components/MapSection';
 import OrbitShowcase from '../components/OrbitShowcase';
+import WaveGalleryScroll from '../components/WaveGalleryScroll';
 import AnimatedSection from '../components/AnimatedSection';
 import '../components/Hero.css';
 import './HomePage.css';
@@ -345,6 +346,9 @@ const HomePage = () => {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Infinite Wave Travel Gallery (Dynamic Heights) */}
+      <WaveGalleryScroll />
 
       {/* Map & Office Section */}
       <MapSection />
