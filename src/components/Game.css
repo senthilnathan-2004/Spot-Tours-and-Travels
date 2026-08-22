@@ -1,0 +1,149 @@
+.game-section {
+  background-color: var(--bg-white);
+  padding: 5.5rem 0;
+  text-align: center;
+}
+
+.game-description {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: -1.5rem;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-board {
+  max-width: 1000px;
+  height: 480px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--card-border);
+  background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+}
+
+.game-start-screen,
+.game-over-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.game-intro-icon {
+  font-size: 3.5rem;
+  color: var(--secondary);
+  margin-bottom: 12px;
+  animation: floatAnim 3s infinite ease-in-out;
+}
+
+.game-trophy-icon {
+  font-size: 3.5rem;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.game-start-screen h3,
+.game-over-screen h3 {
+  font-size: 2.4rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-main);
+}
+
+.game-subtext {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.game-over-screen p {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-main);
+}
+
+.game-over-screen span {
+  color: var(--primary);
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.game-message {
+  font-size: 0.95rem !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 1.75rem !important;
+  line-height: 1.5;
+}
+
+.game-over-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.hud-item {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.hud-item span {
+  color: var(--primary);
+}
+
+.game-target {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: var(--primary);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(216, 58, 86, 0.4);
+  animation: pulseGlow 1.5s infinite;
+  transition: top 0.15s ease, left 0.15s ease;
+  user-select: none;
+}
+
+.game-target:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.target-inner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1.4rem;
+}

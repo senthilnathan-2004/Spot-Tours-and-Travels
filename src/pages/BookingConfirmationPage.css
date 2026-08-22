@@ -1,0 +1,297 @@
+.confirmation-page {
+  padding: 100px 0 5rem;
+  background-color: var(--bg-light);
+  min-height: 100vh;
+}
+
+.confirmation-container {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.confirmation-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.confirmation-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.success-icon-badge {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: #DCFCE7;
+  color: #16A34A;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.confirmation-header h1 {
+  font-size: 2.2rem;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.confirmation-header h1 span {
+  color: var(--primary);
+}
+
+.conf-sub {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  line-height: 1.5;
+}
+
+.booking-ref-badge {
+  display: inline-flex;
+  flex-direction: column;
+  background: rgba(14, 116, 144, 0.08);
+  border: 1px solid rgba(14, 116, 144, 0.25);
+  padding: 10px 24px;
+  border-radius: 12px;
+}
+
+.booking-ref-badge span {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.booking-ref-badge strong {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+/* Details Grid */
+.conf-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 2rem;
+  background: var(--bg-light);
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+}
+
+.conf-section h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.conf-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  font-size: 0.85rem;
+}
+
+.conf-item:last-child {
+  border-bottom: none;
+}
+
+.conf-label {
+  color: var(--text-muted);
+}
+
+.conf-val {
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+}
+
+.conf-val.highlight {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Total Price Banner */
+.conf-total-banner {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  color: white;
+  padding: 20px 24px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.total-title {
+  font-size: 1rem;
+  font-weight: 700;
+  display: block;
+}
+
+.total-note {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.conf-final-price {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Next Steps */
+.next-steps-box {
+  margin-bottom: 2rem;
+}
+
+.next-steps-box h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.3rem;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+.steps-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.step-col {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.step-col h4 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.step-col p {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Action Buttons */
+.conf-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.conf-wa-btn {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 1.05rem;
+  justify-content: center;
+}
+
+.conf-print-btn {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 0.95rem;
+  justify-content: center;
+}
+
+.conf-home-link {
+  color: var(--secondary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.conf-home-link:hover {
+  color: var(--primary);
+}
+
+/* Support Footer */
+.conf-support-footer {
+  border-top: 1px solid var(--card-border);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.conf-support-footer a {
+  color: var(--secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+  .confirmation-page {
+    padding: 0;
+  }
+  .conf-action-buttons,
+  .site-header,
+  .site-footer {
+    display: none !important;
+  }
+  .confirmation-card {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .conf-details-grid {
+    grid-template-columns: 1fr;
+  }
+  .steps-row {
+    grid-template-columns: 1fr;
+  }
+  .confirmation-card {
+    padding: 24px;
+  }
+}

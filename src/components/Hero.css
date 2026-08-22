@@ -1,0 +1,262 @@
+.hero-section {
+  min-height: 90vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #64C5F0 url('../assets/hero-airplane.jpg') right center / cover no-repeat;
+  margin-top: 68px;
+  padding-top: 50px;
+  padding-bottom: 70px;
+}
+
+.hero-overlay {
+  display: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 30px;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.hero-badge-icon {
+  color: #38bdf8;
+  font-size: 1.05rem;
+}
+
+.hero-title {
+  font-size: clamp(2.6rem, 5.2vw, 4.4rem);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  max-width: 1100px;
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.text-glow {
+  color: #ffffff;
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: #ffffff;
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #0f172a;
+  font-weight: 700;
+  margin-bottom: 2.25rem;
+  max-width: 980px;
+  line-height: 1.65;
+  text-shadow: none;
+}
+
+/* Wide Hero Stats matching section width */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 2.5rem;
+  padding: 20px 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  width: 100%;
+  max-width: 920px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: var(--card-border);
+}
+
+.stat-star-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.star-icons {
+  display: flex;
+  gap: 3px;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.hero-cta-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  font-size: 1.1rem;
+  padding: 14px 34px;
+}
+
+.btn-whatsapp {
+  background-color: #25D366;
+  color: white;
+  padding: 14px 30px;
+  border: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  text-decoration: none;
+}
+
+.btn-whatsapp:hover {
+  background-color: #1ebe57;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+  color: white;
+}
+
+/* Tablet & Mobile Media Queries */
+@media (max-width: 1024px) {
+  .hero-section {
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .hero-content {
+    width: 100%;
+  }
+
+  .hero-stats {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 35px;
+    min-height: auto;
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .hero-overlay {
+    display: none;
+  }
+
+  .hero-badge {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    gap: 8px;
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .hero-badge-icon {
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .hero-title {
+    font-size: clamp(1.9rem, 6vw, 2.2rem);
+    line-height: 1.15;
+    margin-bottom: 0.85rem;
+    text-align: left;
+    color: #ffffff;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.7);
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    color: #0f172a;
+    font-weight: 700;
+    text-shadow: none;
+  }
+
+  .hero-stats {
+    display: none;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-btn,
+  .hero-whatsapp-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 18px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+}

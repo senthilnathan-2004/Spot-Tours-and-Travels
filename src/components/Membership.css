@@ -1,0 +1,201 @@
+.membership-section {
+  background-color: var(--bg-white);
+  padding: 5.5rem 0;
+}
+
+.membership-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 5rem;
+  align-items: stretch;
+}
+
+.plan-card {
+  padding: 36px 28px;
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  transition: all 0.35s ease;
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card.popular {
+  border: 2px solid var(--primary);
+  box-shadow: 0 12px 35px rgba(216, 58, 86, 0.15);
+  transform: scale(1.02);
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.plan-card.popular:hover {
+  transform: scale(1.02) translateY(-8px);
+}
+
+.popular-badge {
+  position: absolute;
+  top: 0; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, var(--primary) 0%, #E14958 100%);
+  color: white;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(216, 58, 86, 0.3);
+  white-space: nowrap;
+}
+
+.plan-card h3 {
+  font-size: 1.6rem;
+  color: var(--text-main);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.plan-destinations {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--secondary);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.plan-duration {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed var(--card-border);
+}
+
+.price span {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+}
+
+.plan-features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.plan-features li {
+  color: var(--text-main);
+  font-size: 0.95rem;
+  padding: 8px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
+}
+
+.feature-check-icon {
+  color: var(--secondary);
+  font-size: 0.85rem;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.plan-btn-group {
+  margin-top: auto;
+}
+
+.plan-btn {
+  width: 100%;
+}
+
+.why-choose-us {
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--card-border);
+}
+
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 2rem;
+}
+
+.reason-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--bg-light);
+  padding: 24px 20px;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary);
+  border-top: 1px solid var(--card-border);
+  border-right: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease;
+}
+
+.reason-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.reason-number {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  color: var(--secondary);
+  font-weight: bold;
+  opacity: 0.85;
+}
+
+.reason-text h4 {
+  color: var(--text-main);
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.reason-text p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .plan-card.popular {
+    transform: scale(1);
+  }
+  .plan-card.popular:hover {
+    transform: translateY(-8px);
+  }
+}
+

@@ -1,0 +1,259 @@
+.map-section {
+  background-color: var(--bg-white);
+  padding: 5.5rem 0;
+}
+
+.map-container {
+  display: flex;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--card-border);
+  width: 100%;
+  background: #ffffff;
+}
+
+.map-info {
+  flex: 1.1;
+  padding: 3rem 2.5rem;
+  background-color: #ffffff;
+}
+
+.map-frame {
+  flex: 1.3;
+  min-height: 480px;
+  width: 100%;
+  position: relative;
+  background: #e2e8f0;
+  display: flex;
+}
+
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  border: 0;
+  display: block;
+}
+
+.map-info h2 {
+  font-size: 2.2rem;
+  margin-top: 0.35rem;
+  margin-bottom: 1.25rem;
+  color: var(--text-main);
+  text-align: left;
+}
+
+.map-info h2 span {
+  color: var(--primary);
+}
+
+.address-box {
+  background: var(--bg-light);
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 1.25rem;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.map-pin-icon {
+  color: var(--primary);
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.address-header strong {
+  font-size: 1.05rem;
+  color: var(--text-main);
+  display: block;
+}
+
+.plus-code {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  font-weight: 600;
+  display: block;
+}
+
+.address-text {
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-size: 0.95rem;
+  padding-left: 28px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.info-block {
+  background: var(--bg-light);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+}
+
+.info-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.info-icon-small {
+  color: var(--secondary);
+  font-size: 0.85rem;
+}
+
+.info-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.info-desc strong {
+  color: var(--text-main);
+}
+
+.status-open {
+  display: inline-block;
+  color: #16A34A;
+  font-weight: 700;
+  font-size: 0.75rem;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-top: 4px;
+}
+
+.map-action-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.map-btn,
+.map-call-btn {
+  padding: 12px 22px;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+/* Tablet & Mobile Layout Fixes */
+@media (max-width: 900px) {
+  .map-container {
+    flex-direction: column;
+    border-radius: 14px;
+  }
+
+  .map-info {
+    padding: 2rem 1.5rem;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .map-frame {
+    width: 100%;
+    height: 320px;
+    min-height: 320px;
+    flex: none;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .map-frame iframe {
+    width: 100%;
+    height: 320px;
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .map-section {
+    padding: 3.5rem 0;
+  }
+
+  .map-info {
+    padding: 1.25rem 1rem;
+  }
+
+  .map-info h2 {
+    font-size: 1.85rem !important;
+    margin-bottom: 1rem;
+  }
+
+  .address-box {
+    padding: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .address-text {
+    font-size: 0.9rem;
+    padding-left: 0;
+    margin-top: 6px;
+  }
+
+  .info-row {
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .info-block {
+    padding: 10px 12px;
+  }
+
+  .map-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .map-btn,
+  .map-call-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 8px;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+  }
+
+  .map-frame {
+    width: 100%;
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+  }
+
+  .map-frame iframe {
+    width: 100%;
+    height: 280px;
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 380px) {
+  .map-action-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,199 @@
+.services-section {
+  background-color: var(--bg-white);
+  padding: 5.5rem 0;
+  overflow: hidden;
+}
+
+.services-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  max-width: 600px;
+  margin-left: 0;
+  margin-right: auto;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* 2-Row Infinite Marquee Wrapper inside standard container */
+.services-marquee-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 16px 4px 28px;
+  box-sizing: border-box;
+}
+
+.marquee-row {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  padding: 8px 0;
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-track.scroll-left {
+  animation: scrollServicesLeft 32s linear infinite;
+}
+
+.marquee-track.scroll-right {
+  animation: scrollServicesRight 32s linear infinite;
+}
+
+.marquee-row:hover .marquee-track,
+.marquee-row:active .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Service Card Design - Preserved Solid Width Across All Views */
+.service-card {
+  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+  min-height: 235px;
+  padding: 28px 22px;
+  border-radius: 16px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.service-card-header {
+  display: contents;
+}
+
+.service-card:hover {
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+}
+
+.service-icon {
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+  color: var(--secondary);
+  background: rgba(14, 116, 144, 0.08);
+  width: 62px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.service-card h3 {
+  font-family: 'Oswald', sans-serif;
+  color: var(--text-main);
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.service-card p {
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+/* Seamless Continuous Animations */
+@keyframes scrollServicesLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scrollServicesRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section {
+    padding: 3.5rem 0;
+  }
+
+  .services-marquee-wrapper {
+    padding: 12px 0 20px;
+    gap: 20px;
+  }
+
+  .service-card {
+    width: 280px;
+    min-width: 280px;
+    max-width: 280px;
+    min-height: auto;
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .service-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  .service-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 1.25rem;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .service-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    text-align: left;
+  }
+
+  .service-card p {
+    text-align: left;
+    width: 100%;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .marquee-track.scroll-left {
+    animation-duration: 24s;
+  }
+
+  .marquee-track.scroll-right {
+    animation-duration: 24s;
+  }
+}
