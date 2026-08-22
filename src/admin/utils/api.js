@@ -1,5 +1,7 @@
-// Base URL: empty in production (same origin), localhost:3001 for local dev
-const BASE = import.meta.env.VITE_API_BASE_URL || '';
+// Base URL: in production always use same origin (''), in dev use VITE_API_BASE_URL or fallback to localhost:3001
+const BASE = import.meta.env.PROD 
+  ? '' 
+  : (import.meta.env.VITE_API_BASE_URL || '');
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
