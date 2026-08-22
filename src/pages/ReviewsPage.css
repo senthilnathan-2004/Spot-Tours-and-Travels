@@ -332,6 +332,34 @@
 }
 
 @media (max-width: 768px) {
+  /* Single row category tabs on mobile view with smooth auto-scroll & snapping */
+  .reviews-filter-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    width: 100%;
+    padding: 4px 6px 8px 4px;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+    scrollbar-width: none;
+  }
+
+  .reviews-filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .review-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    scroll-snap-align: center;
+    padding: 7px 16px;
+    font-size: 0.88rem;
+  }
+
   .rating-overview-card {
     grid-template-columns: 1fr;
     padding: 16px 14px;

@@ -44,7 +44,10 @@ const BlogPage = () => {
               <button 
                 key={cat} 
                 className={`cat-btn ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={(e) => {
+                  setSelectedCategory(cat);
+                  e.currentTarget?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }}
               >
                 {cat}
               </button>

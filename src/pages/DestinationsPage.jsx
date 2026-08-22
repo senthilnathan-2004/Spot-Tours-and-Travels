@@ -55,7 +55,10 @@ const DestinationsPage = () => {
             <button 
               key={cat} 
               className={`dest-tab-btn ${selectedCategory === cat ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={(e) => {
+                setSelectedCategory(cat);
+                e.currentTarget?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }}
             >
               {cat === 'All' ? 'All Destinations' : cat + 's'}
             </button>

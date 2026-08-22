@@ -154,7 +154,10 @@ const ReviewsPage = () => {
             <button 
               key={cat} 
               className={`review-tab-btn ${selectedFilter === cat ? 'active' : ''}`}
-              onClick={() => setSelectedFilter(cat)}
+              onClick={(e) => {
+                setSelectedFilter(cat);
+                e.currentTarget?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }}
             >
               {cat === 'All' ? 'All Reviews' : cat + ' Trips'}
             </button>
