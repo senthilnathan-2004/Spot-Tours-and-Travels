@@ -4,7 +4,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  background: #64C5F0 url('../assets/hero-airplane.jpg') right center / cover no-repeat;
+  background: #0f172a url('../assets/hero-bg.jpg') center center / cover no-repeat;
   margin-top: 68px;
   padding-top: 50px;
   padding-bottom: 50px;
@@ -52,7 +52,7 @@
   font-weight: 800;
   letter-spacing: 0.5px;
   max-width: 1100px;
-  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 3px 15px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .text-glow {
@@ -66,12 +66,12 @@
 
 .hero-subtitle {
   font-size: 1.2rem;
-  color: #0f172a;
-  font-weight: 700;
+  color: #ffffff;
+  font-weight: 600;
   margin-bottom: 1.75rem;
   max-width: 980px;
   line-height: 1.6;
-  text-shadow: none;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 /* Wide Hero Stats matching section width (Transparent Glassmorphic Card) */
@@ -270,9 +270,9 @@
     font-size: 1rem;
     margin-bottom: 1.5rem;
     text-align: left;
-    color: #0f172a;
-    font-weight: 700;
-    text-shadow: none;
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
   }
 
   .hero-stats {
