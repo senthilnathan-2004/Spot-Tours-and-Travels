@@ -73,18 +73,19 @@
   text-shadow: none;
 }
 
-/* Wide Hero Stats matching section width */
+/* Wide Hero Stats matching section width (Transparent Glassmorphic Card) */
 .hero-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 1.75rem;
   padding: 18px 28px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 16px;
-  border: 1px solid var(--card-border);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.12);
   width: 100%;
   max-width: 920px;
 }
@@ -103,7 +104,7 @@
   top: 15%;
   height: 70%;
   width: 1px;
-  background: var(--card-border);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 .stat-star-group {
