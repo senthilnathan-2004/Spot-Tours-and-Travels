@@ -1,12 +1,12 @@
 .hero-section {
-  min-height: 90vh;
+  min-height: auto;
   position: relative;
   display: flex;
   align-items: center;
   background: #64C5F0 url('../assets/hero-airplane.jpg') right center / cover no-repeat;
   margin-top: 68px;
   padding-top: 50px;
-  padding-bottom: 70px;
+  padding-bottom: 50px;
 }
 
 .hero-overlay {
@@ -32,7 +32,7 @@
   font-size: 0.9rem;
   padding: 8px 18px;
   border-radius: 30px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
@@ -46,7 +46,7 @@
 .hero-title {
   font-size: clamp(2.6rem, 5.2vw, 4.4rem);
   line-height: 1.1;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
   color: #ffffff;
   font-weight: 800;
   letter-spacing: 0.5px;
@@ -64,12 +64,12 @@
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: #0f172a;
   font-weight: 700;
-  margin-bottom: 2.25rem;
+  margin-bottom: 1.75rem;
   max-width: 980px;
-  line-height: 1.65;
+  line-height: 1.6;
   text-shadow: none;
 }
 
@@ -78,8 +78,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-bottom: 2.5rem;
-  padding: 20px 32px;
+  margin-bottom: 1.75rem;
+  padding: 18px 28px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -173,15 +173,21 @@
   color: white;
 }
 
-/* Tablet Media Queries (769px to 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Tablet Media Queries (601px to 1024px) */
+@media (max-width: 1024px) {
+  .hero-badge {
+    display: none !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
   .hero-section {
-    min-height: 70vh;
+    min-height: auto;
     background-position: center center;
     background-size: cover;
     display: flex;
     align-items: center;
-    padding-top: 40px;
+    padding-top: 36px;
     padding-bottom: 40px;
   }
 
@@ -190,35 +196,55 @@
   }
 
   .hero-title {
-    font-size: clamp(3.4rem, 6.2vw, 4.4rem);
+    font-size: clamp(3.2rem, 5.8vw, 4.2rem);
     line-height: 1.08;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     max-width: 100%;
   }
 
   .hero-subtitle {
-    font-size: 1.22rem;
-    line-height: 1.65;
-    margin-bottom: 2.75rem; /* Spacious gap between text and buttons */
-    max-width: 90%;
-  }
-
-  .hero-cta-group {
-    margin-top: 0.5rem;
-    gap: 18px;
+    font-size: 1.18rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 95%;
   }
 
   .hero-stats {
     max-width: 100%;
+    margin-bottom: 1.75rem;
+    padding: 16px 20px;
+  }
+
+  /* Single row full width buttons on tablet view */
+  .hero-cta-group {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: 0;
+  }
+
+  .hero-btn,
+  .hero-whatsapp-btn {
+    flex: 1 1 0% !important;
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 14px 20px !important;
+    font-size: 1.05rem !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .hero-section {
     margin-top: 60px;
-    min-height: 70vh;
+    min-height: auto;
     padding-top: 24px;
-    padding-bottom: 24px;
+    padding-bottom: 28px;
     background-position: center center;
     background-size: cover;
     display: flex;
@@ -227,25 +253,6 @@
 
   .hero-overlay {
     display: none;
-  }
-
-  .hero-badge {
-    display: flex;
-    width: 100%;
-    max-width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
-    font-size: 0.8rem;
-    padding: 8px 12px;
-    gap: 8px;
-    margin-bottom: 1rem;
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  .hero-badge-icon {
-    font-size: 0.95rem;
-    flex-shrink: 0;
   }
 
   .hero-title {
@@ -267,7 +274,41 @@
   }
 
   .hero-stats {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    padding: 12px 14px;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+
+  .stat-number {
+    font-size: 1.45rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .star-icons {
+    font-size: 0.75rem;
+    gap: 1px;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-top: 3px;
+    letter-spacing: 0.2px;
+  }
+
+  .stat:not(:last-child)::after {
+    right: -5px;
+    height: 60%;
+    top: 20%;
   }
 
   .hero-cta-group {
@@ -292,12 +333,6 @@
   .hero-section {
     padding-top: 32px;
     padding-bottom: 32px;
-  }
-
-  .hero-badge {
-    font-size: 0.85rem;
-    padding: 9px 16px;
-    margin-bottom: 1.25rem;
   }
 
   .hero-title {
@@ -341,5 +376,12 @@
   .hero-cta-group {
     margin-top: 0.75rem;
     gap: 18px;
+  }
+}
+
+/* Hide stats card only on extremely small screens (360px width and below) */
+@media (max-width: 360px) {
+  .hero-stats {
+    display: none !important;
   }
 }
