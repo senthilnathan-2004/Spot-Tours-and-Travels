@@ -278,29 +278,27 @@ export default function Bookings() {
       />
 
       {/* Filter Tabs & Search Bar */}
-      <div className="adm-filters" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+      <div className="adm-filters">
         <input
           type="text"
           className="adm-search-input"
           placeholder="Search by customer name, ref ID, phone, package, destination..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          style={{ flex: '1 1 280px' }}
         />
 
-        {/* Date Sort Toggle */}
-        <button
-          type="button"
-          onClick={() => setDateSort(s => s === 'desc' ? 'asc' : 'desc')}
-          className="adm-btn adm-btn-ghost"
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.82rem', whiteSpace: 'nowrap' }}
-          title="Toggle date order"
-        >
-          <MdSwapVert style={{ fontSize: '1.2rem' }} />
-          <span>Date: {dateSort === 'desc' ? 'Newest First' : 'Oldest First'}</span>
-        </button>
+        <div className="adm-filter-bar">
+          {/* Date Sort Toggle */}
+          <button
+            type="button"
+            onClick={() => setDateSort(s => s === 'desc' ? 'asc' : 'desc')}
+            className="adm-btn adm-btn-sm adm-btn-ghost"
+            title="Toggle date order"
+          >
+            <MdSwapVert style={{ fontSize: '1.15rem' }} />
+            <span>{dateSort === 'desc' ? 'Date: Newest' : 'Date: Oldest'}</span>
+          </button>
 
-        <div className="adm-filter-tabs" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {STATUSES.map(s => (
             <button
               key={s.id}
