@@ -182,14 +182,17 @@
 }
 
 .team-img-wrap {
-  height: 240px;
+  height: 280px;
   overflow: hidden;
+  position: relative;
+  background-color: var(--bg-light);
 }
 
 .team-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
   transition: transform 0.5s ease;
 }
 
@@ -317,6 +320,14 @@
     max-width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
+  }
+
+  .team-img-wrap {
+    height: 280px;
+  }
+
+  .team-img-wrap img {
+    object-position: top center;
   }
 
   .team-info {
