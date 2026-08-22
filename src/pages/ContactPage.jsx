@@ -4,20 +4,22 @@ import {
   FaPhoneAlt, 
   FaWhatsapp, 
   FaMapMarkerAlt, 
-  FaEnvelope, 
   FaDirections, 
   FaCheckCircle, 
-  FaPaperPlane,
-  FaInstagram,
-  FaFacebookF
+  FaPaperPlane, 
+  FaInstagram, 
+  FaFacebookF 
 } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import { agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import CustomDatePicker from '../components/CustomDatePicker';
 import './ContactPage.css';
 
 const ContactPage = () => {
+  const { agencyInfo, content } = useData();
+  const contact = content?.contact_page || {};
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -36,7 +38,7 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    // Save enquiry to MongoDB & trigger email notification (fire-and-forget)
+    // Save enquiry to MongoDB
     api.createEnquiry(formState).catch(err => console.warn('Enquiry API save failed:', err.message));
     // Format WhatsApp message to send as fallback
     const waText = `Hi Spot Tours, I am ${formState.name} (${formState.phone}). I want to enquire about trip to ${formState.destination || 'a vacation'} on ${formState.travelDate || 'flexible dates'}. Notes: ${formState.message}`;
@@ -48,9 +50,15 @@ const ContactPage = () => {
       {/* Banner */}
       <div className="page-header-banner">
         <div className="container">
-          <AnimatedSection anim="fade-down" delay="100" className="section-tag">CONNECT WITH US</AnimatedSection>
-          <AnimatedSection as="h1" anim="fade-up" delay="200">CONTACT <span>SPOT TOURS &amp; TRAVELS</span></AnimatedSection>
-          <AnimatedSection as="p" anim="fade-up" delay="300">Get in touch for custom holiday packages, flight &amp; train tickets, cab bookings, or visit our Kuniyamuthur office.</AnimatedSection>
+          <AnimatedSection anim="fade-down" delay="100" className="section-tag">
+            {contact.page_tag || "CONNECT WITH US"}
+          </AnimatedSection>
+          <AnimatedSection as="h1" anim="fade-up" delay="200">
+            {contact.page_title || "CONTACT SPOT TOURS & TRAVELS"}
+          </AnimatedSection>
+          <AnimatedSection as="p" anim="fade-up" delay="300">
+            {contact.page_subtitle || "Get in touch for custom holiday packages, flight & train tickets, cab bookings, or visit our Kuniyamuthur office."}
+          </AnimatedSection>
         </div>
       </div>
 
@@ -58,9 +66,9 @@ const ContactPage = () => {
         <div className="contact-main-grid">
           {/* Left Column: Direct Info */}
           <AnimatedSection anim="fade-right" className="contact-info-column">
-            <h2>OUR <span>OFFICE DETAILS</span></h2>
+            <h2>{contact.office_details_heading || "OUR OFFICE DETAILS"}</h2>
             <p className="contact-info-desc">
-              We are located directly on Palakkad - Coimbatore Road, next to SBI Bank in Kuniyamuthur. Drop in anytime or call for prompt trip quotes!
+              {contact.office_details_sub || "We are located directly on Palakkad - Coimbatore Road, next to SBI Bank in Kuniyamuthur. Drop in anytime or call for prompt trip quotes!"}
             </p>
 
             <div className="contact-info-cards-stack">
@@ -113,8 +121,8 @@ const ContactPage = () => {
           {/* Right Column: Contact & Enquiry Form */}
           <AnimatedSection anim="fade-left" delay="150" className="contact-form-column">
             <div className="enquiry-card">
-              <h2>SEND US AN <span>ENQUIRY</span></h2>
-              <p>Fill out this form and our team will get back to you with custom itinerary and pricing within 30 minutes!</p>
+              <h2>{contact.enquiry_form_heading || "SEND US AN ENQUIRY"}</h2>
+              <p>{contact.enquiry_form_sub || "Fill out this form and our team will get back to you with custom itinerary and pricing within 30 minutes!"}</p>
 
               {submitted && (
                 <div className="form-success-banner">
@@ -201,7 +209,7 @@ const ContactPage = () => {
           <div className="map-title-row">
             <div>
               <h3>Find Spot Tours & Travels on Map</h3>
-              <p>8/95, Palakkad - Coimbatore Rd, near SBI Bank, Pulakadu, Kuniyamuthur, Coimbatore - 641008</p>
+              <p>{agencyInfo.address}</p>
             </div>
             <a 
               href="https://www.google.com/maps/search/?api=1&query=Spot+Tours+and+Travels+Kuniyamuthur+Coimbatore" 

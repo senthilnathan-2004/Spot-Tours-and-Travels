@@ -155,7 +155,7 @@
 .package-image-wrap {
   position: relative;
   aspect-ratio: 16/9;
-  max-height: 165px;
+  max-height: 155px;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -168,7 +168,7 @@
 }
 
 .package-card:hover .package-image-wrap img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .package-duration-pill {
@@ -185,7 +185,7 @@
 }
 
 .package-body {
-  padding: 14px 16px;
+  padding: 12px 16px 14px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -209,19 +209,18 @@
 }
 
 .package-rating {
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--accent);
 }
 
 .package-title {
   font-family: 'Oswald', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-main);
   margin-bottom: 2px;
-  letter-spacing: 0.5px;
-  line-height: 1.2;
-  min-height: 2.4em;
+  letter-spacing: 0.3px;
+  line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;

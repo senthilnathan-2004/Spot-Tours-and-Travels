@@ -12,28 +12,32 @@ import {
   FaCarSide, 
   FaHotel, 
   FaUserFriends, 
-  FaShieldAlt, 
   FaClock, 
   FaShareAlt,
+  FaShieldAlt,
   FaArrowLeft
 } from 'react-icons/fa';
-import { tourPackages, agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import CustomSelect from '../components/CustomSelect';
 import CustomDatePicker from '../components/CustomDatePicker';
 import './PackageDetailPage.css';
 
-
 const PackageDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { packages: tourPackages, agencyInfo } = useData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
 
-  const pkg = tourPackages.find((p) => p.id === id) || tourPackages[0];
+  const pkg = (tourPackages || []).find((p) => p.id === id) || (tourPackages && tourPackages[0]) || {};
   const [activeImage, setActiveImage] = useState(pkg.image);
+
+  useEffect(() => {
+    if (pkg.image) setActiveImage(pkg.image);
+  }, [pkg]);
 
   // Booking Form State
   const [formData, setFormData] = useState({

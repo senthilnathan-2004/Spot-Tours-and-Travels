@@ -9,55 +9,32 @@ import {
   FaPassport,
   FaHotel
 } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from './AnimatedSection';
 import './Services.css';
 
-const servicesData = [
-  {
-    title: "Domestic Tour Packages",
-    description: "Customized holiday packages across India including Ooty, Kodaikanal, Kerala, Goa, Kashmir, Himachal, and Rajasthan.",
-    icon: <FaPlaneArrival />
-  },
-  {
-    title: "International Holidays",
-    description: "Exciting overseas vacation packages to Dubai, Bali, Singapore, Malaysia, Thailand, Sri Lanka, Maldives, and Europe.",
-    icon: <FaGlobeAmericas />
-  },
-  {
-    title: "Honeymoon Specials",
-    description: "Romantic getaways with luxury resort stays, flower bed decoration, private sightseeing cabs, and candlelit dinners.",
-    icon: <FaHeart />
-  },
-  {
-    title: "Pilgrimage & Temple Tours",
-    description: "Curated spiritual journeys to Rameswaram, Madurai, Tirupati, Varanasi, Chidambaram, Navagraha, and Kumbakonam.",
-    icon: <FaOm />
-  },
-  {
-    title: "AC Cab & Bus Rentals",
-    description: "Comfortable sedans, Innova, Crysta, and Tempo Travelers for local Coimbatore transfers and outstation journeys.",
-    icon: <FaCarSide />
-  },
-  {
-    title: "Flight & Train Ticketing",
-    description: "Quick, hassle-free domestic & international flight ticketing, tatkal train booking assistance, and bus seat reservations.",
-    icon: <FaTicketAlt />
-  },
-  {
-    title: "Visa & Passport Guidance",
-    description: "End-to-end support for tourist visas, travel insurance, documentation, and passport appointment assistance.",
-    icon: <FaPassport />
-  },
-  {
-    title: "Hotel & Resort Bookings",
-    description: "Handpicked verified 3-star, 4-star, 5-star hotels, homestays, and jungle resorts with complimentary breakfast.",
-    icon: <FaHotel />
-  }
-];
+const ICON_MAP = {
+  plane: <FaPlaneArrival />,
+  globe: <FaGlobeAmericas />,
+  heart: <FaHeart />,
+  om: <FaOm />,
+  car: <FaCarSide />,
+  ticket: <FaTicketAlt />,
+  passport: <FaPassport />,
+  hotel: <FaHotel />
+};
 
 const Services = () => {
-  const row1 = servicesData.slice(0, 4);
-  const row2 = servicesData.slice(4, 8);
+  const { services: servicesData } = useData();
+
+  const activeServices = (servicesData || []).map(s => ({
+    ...s,
+    icon: typeof s.icon === 'object' && s.icon ? s.icon : (ICON_MAP[s.iconKey] || <FaPlaneArrival />)
+  }));
+
+  const mid = Math.ceil(activeServices.length / 2);
+  const row1 = activeServices.slice(0, mid);
+  const row2 = activeServices.slice(mid);
 
   // Duplicating items for seamless infinite continuous scrolling
   const row1Items = [...row1, ...row1, ...row1, ...row1];

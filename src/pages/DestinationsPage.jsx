@@ -11,11 +11,14 @@ import {
   FaArrowRight,
   FaTimes
 } from 'react-icons/fa';
-import { destinationsList, tourPackages, agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import './DestinationsPage.css';
 
 const DestinationsPage = () => {
+  const { destinations: destinationsList, agencyInfo, content } = useData();
+  const destContent = content?.destinations_page || {};
+
   const [searchParams] = useSearchParams();
   const initialSelectedId = searchParams.get('selected');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -23,27 +26,31 @@ const DestinationsPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (initialSelectedId) {
+    if (initialSelectedId && destinationsList?.length) {
       const found = destinationsList.find(d => d.id === initialSelectedId);
       if (found) setActiveModalDest(found);
     }
-  }, [initialSelectedId]);
+  }, [initialSelectedId, destinationsList]);
 
-  const categories = ['All', 'Hill Station', 'Beach', 'Spiritual', 'International'];
+  const categories = ['All', 'Hill Station', 'Beach', 'Spiritual', 'International', 'Heritage', 'Wildlife'];
 
   const filteredDestinations = selectedCategory === 'All'
-    ? destinationsList
-    : destinationsList.filter(d => d.category === selectedCategory);
+    ? (destinationsList || [])
+    : (destinationsList || []).filter(d => d.category === selectedCategory);
 
   return (
     <div className="destinations-page">
       {/* Page Header */}
       <div className="page-header-banner">
         <div className="container">
-          <AnimatedSection anim="fade-down" delay="100" className="section-tag">EXPLORE THE WORLD</AnimatedSection>
-          <AnimatedSection as="h1" anim="fade-up" delay="200">POPULAR <span>DESTINATIONS</span></AnimatedSection>
+          <AnimatedSection anim="fade-down" delay="100" className="section-tag">
+            {destContent.page_tag || "EXPLORE THE WORLD"}
+          </AnimatedSection>
+          <AnimatedSection as="h1" anim="fade-up" delay="200">
+            {destContent.page_title || "POPULAR DESTINATIONS"}
+          </AnimatedSection>
           <AnimatedSection as="p" anim="fade-up" delay="300">
-            From misty hill tops in the Nilgiris to turquoise tropical waters and grand world heritage sites. Discover your next journey starting from Coimbatore.
+            {destContent.page_subtitle || "From misty hill tops in the Nilgiris to turquoise tropical waters and grand world heritage sites. Discover your next journey starting from Coimbatore."}
           </AnimatedSection>
         </div>
       </div>
@@ -68,7 +75,13 @@ const DestinationsPage = () => {
         {/* Destination Cards Grid */}
         <div className="destinations-large-grid">
           {filteredDestinations.map((dest, idx) => (
-            <AnimatedSection key={dest.id} anim="fade-up" delay={String((idx % 3) * 100 + 100)} className="destination-large-card" onClick={() => setActiveModalDest(dest)}>
+            <AnimatedSection 
+              key={dest.id || dest._id} 
+              anim="fade-up" 
+              delay={String((idx % 3) * 100 + 100)} 
+              className="destination-large-card" 
+              onClick={() => setActiveModalDest(dest)}
+            >
               <div className="dest-image-wrap">
                 <img src={dest.banner} alt={dest.name} loading="lazy" />
                 <span className="dest-cat-badge">{dest.category}</span>
@@ -80,8 +93,8 @@ const DestinationsPage = () => {
                   <FaMapMarkerAlt /> {dest.state}
                 </div>
                 <h3>{dest.name}</h3>
-                <p className="dest-tagline">"{dest.tagline}"</p>
-                <p className="dest-desc-snippet">{dest.description.substring(0, 120)}...</p>
+                {dest.tagline && <p className="dest-tagline">"{dest.tagline}"</p>}
+                <p className="dest-desc-snippet">{dest.description ? dest.description.substring(0, 120) + '...' : ''}</p>
 
                 <div className="dest-quick-stats">
                   <div><FaCalendarAlt /> Best Time: <strong>{dest.bestTime}</strong></div>
@@ -137,22 +150,26 @@ const DestinationsPage = () => {
                 <p>{activeModalDest.description}</p>
               </div>
 
-              <div className="modal-section">
-                <h3>Top Attractions & Sightseeing</h3>
-                <div className="attractions-pill-grid">
-                  {activeModalDest.topAttractions.map((attr, i) => (
-                    <span key={i} className="attr-pill"><FaCheck className="check-icon" /> {attr}</span>
-                  ))}
+              {activeModalDest.topAttractions && activeModalDest.topAttractions.length > 0 && (
+                <div className="modal-section">
+                  <h3>Top Attractions & Sightseeing</h3>
+                  <div className="attractions-pill-grid">
+                    {activeModalDest.topAttractions.map((attr, i) => (
+                      <span key={i} className="attr-pill"><FaCheck className="check-icon" /> {attr}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="modal-section">
-                <h3>Spot Tours Travel Tips</h3>
-                <div className="travel-tip-box">
-                  <FaInfoCircle className="tip-icon" />
-                  <p>{activeModalDest.travelTips}</p>
+              {activeModalDest.travelTips && (
+                <div className="modal-section">
+                  <h3>Spot Tours Travel Tips</h3>
+                  <div className="travel-tip-box">
+                    <FaInfoCircle className="tip-icon" />
+                    <p>{activeModalDest.travelTips}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="modal-cta-box">
                 <div className="cta-left">

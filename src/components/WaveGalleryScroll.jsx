@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaMapMarkerAlt, FaCamera, FaStar, FaChevronLeft, FaChevronRight, FaPlay, FaPause } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCamera, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from './AnimatedSection';
 import './WaveGalleryScroll.css';
 
@@ -58,57 +59,38 @@ const galleryItems = [
     title: "Pamban Sea Bridge",
     tag: "Sacred Heritage",
     rating: "4.8",
-    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1609137144813-7d9921338f24?q=80&w=900&auto=format&fit=crop"
   },
   {
     id: 8,
-    location: "Goa Coast, India",
-    title: "Golden Hour Palms",
-    tag: "Beach Escape",
-    rating: "4.7",
-    image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    id: 9,
-    location: "Agra, India",
-    title: "Timeless Heritage",
-    tag: "Golden Triangle",
-    rating: "4.9",
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    id: 10,
-    location: "Singapore City",
-    title: "Gardens by the Bay",
-    tag: "International Tour",
+    location: "Jaipur, Rajasthan",
+    title: "Amber Fort & Palaces",
+    tag: "Royal Heritage",
     rating: "4.8",
-    image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    id: 11,
-    location: "Wayanad, Kerala",
-    title: "Rainforest Bamboo Canopy",
-    tag: "Wilderness",
-    rating: "4.7",
-    image: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=900&auto=format&fit=crop"
-  },
-  {
-    id: 12,
-    location: "Arabian Desert, Dubai",
-    title: "Golden Dune Safari",
-    tag: "Desert Adventure",
-    rating: "4.8",
-    image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?q=80&w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1599661046289-e31897846e41?q=80&w=900&auto=format&fit=crop"
   }
 ];
 
 const WaveGalleryScroll = () => {
+  const { content } = useData();
+  const sc = content?.showcases || {};
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const autoPlayTimer = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
   const total = galleryItems.length;
+
+  // Auto progression
+  useEffect(() => {
+    if (isPaused) return;
+    autoPlayTimer.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % total);
+    }, 3800);
+    return () => clearInterval(autoPlayTimer.current);
+  }, [isPaused, total]);
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev + 1) % total);
@@ -117,15 +99,6 @@ const WaveGalleryScroll = () => {
   const prevSlide = () => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   };
-
-  // Auto-play interval
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 2800);
-    return () => clearInterval(interval);
-  }, [isPaused, total]);
 
   // Touch Swipe Handlers for Mobile
   const handleTouchStart = (e) => {
@@ -163,13 +136,13 @@ const WaveGalleryScroll = () => {
         {/* Section Header */}
         <AnimatedSection anim="fade-up" className="section-header-left wave-header-left">
           <div className="section-tag wave-tag">
-            <FaCamera className="wave-tag-icon" /> 3D PERSPECTIVE GALLERY
+            <FaCamera className="wave-tag-icon" /> {sc.gallery_tag || "3D PERSPECTIVE GALLERY"}
           </div>
           <h2 className="section-title section-title-left">
-            CAPTURING REAL <span>TRAVEL EXPERIENCES</span>
+            {sc.gallery_title ? sc.gallery_title : <>CAPTURING REAL <span>TRAVEL EXPERIENCES</span></>}
           </h2>
           <p className="section-subtitle">
-            Immerse yourself in dynamic 3D moments captured across our signature tours. Click or swipe any card to focus.
+            {sc.gallery_subtitle || "Immerse yourself in dynamic 3D moments captured across our signature tours. Click or swipe any card to focus."}
           </p>
         </AnimatedSection>
       </div>

@@ -1,63 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaStar, FaGoogle, FaQuoteLeft, FaCheckCircle, FaUserCheck } from 'react-icons/fa';
-import { agencyInfo } from '../data/travelData';
+import { FaStar, FaGoogle, FaQuoteLeft, FaCheckCircle } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import CustomSelect from '../components/CustomSelect';
 import './ReviewsPage.css';
 
-const initialReviews = [
-  {
-    name: "Praveen Kumar",
-    time: "2 weeks ago",
-    rating: 5,
-    trip: "Family Kerala Tour",
-    category: "Family",
-    text: "Booked our family Kerala tour (Munnar & Alleppey) with Spot Tours and Travels Coimbatore. Excellent vehicle condition, hygienic resorts, and punctual driver. The entire trip coordination was seamless and stress-free. Highly recommended in Kuniyamuthur!"
-  },
-  {
-    name: "Ananya & Karthik",
-    time: "a month ago",
-    rating: 5,
-    trip: "Bali Honeymoon Package",
-    category: "Honeymoon",
-    text: "We planned our honeymoon to Bali through Spot Tours and Travels. From flight ticketing and visa guidance to romantic candlelit dinner and private sightseeing, everything was executed flawlessly. Best travel agency in Coimbatore!"
-  },
-  {
-    name: "Suresh Sundaram",
-    time: "3 weeks ago",
-    rating: 5,
-    trip: "Rameswaram Temple Tour",
-    category: "Pilgrimage",
-    text: "Organized a spiritual pilgrimage trip to Rameswaram & Madurai for my elderly parents. The AC tourist cab was spotless and the driver was extremely patient and courteous with senior citizens. Truly 'The Spot For Needs'!"
-  },
-  {
-    name: "Deepak Raj",
-    time: "2 months ago",
-    rating: 5,
-    trip: "Goa Friends Vacation",
-    category: "Friends",
-    text: "Spot Tours and Travels gave us the best transparent pricing for our Goa trip with friends. No hidden charges, great resort right next to the beach, and constant support from their Coimbatore office."
-  },
-  {
-    name: "Divya Ramesh",
-    time: "1 month ago",
-    rating: 5,
-    trip: "Ooty & Kodaikanal Tour",
-    category: "Family",
-    text: "Top-notch travel agency near Kuniyamuthur SBI Bank. Prompt train ticket reservations and a fantastic customized hill station itinerary. The resort stay in Ooty was breathtaking."
-  },
-  {
-    name: "Mohammed Farooq",
-    time: "3 months ago",
-    rating: 5,
-    trip: "Dubai Holiday Package",
-    category: "International",
-    text: "Booked a Dubai holiday for our family. Smooth tourist visa processing, hotel stays, desert safari, and Burj Khalifa tickets. Spot Tours handled everything end-to-end with high professionalism."
-  }
-];
-
 const ReviewsPage = () => {
-  const [reviewsList, setReviewsList] = useState(initialReviews);
+  const { reviews: reviewsList, submitReview, content } = useData();
+  const revContent = content?.reviews_page || {};
+
   const [selectedFilter, setSelectedFilter] = useState('All');
   
   // New Review Form State
@@ -75,14 +26,14 @@ const ReviewsPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
     const createdReview = {
       ...newReview,
       time: "Just now",
       rating: Number(newReview.rating)
     };
-    setReviewsList([createdReview, ...reviewsList]);
+    await submitReview(createdReview);
     setShowSubmittedSuccess(true);
     setNewReview({ name: '', trip: '', category: 'Family', rating: 5, text: '' });
     setTimeout(() => setShowSubmittedSuccess(false), 5000);
@@ -91,17 +42,37 @@ const ReviewsPage = () => {
   const categories = ['All', 'Family', 'Honeymoon', 'Pilgrimage', 'Friends', 'International'];
 
   const filteredReviews = selectedFilter === 'All'
-    ? reviewsList
-    : reviewsList.filter(r => r.category === selectedFilter);
+    ? (reviewsList || [])
+    : (reviewsList || []).filter(r => r.category === selectedFilter);
+
+  // Calculate rating stats dynamically
+  const totalCount = reviewsList?.length || 1;
+  const fiveStarsCount = (reviewsList || []).filter(r => r.rating === 5).length;
+  const fourStarsCount = (reviewsList || []).filter(r => r.rating === 4).length;
+  const threeStarsCount = (reviewsList || []).filter(r => r.rating === 3).length;
+  const twoStarsCount = (reviewsList || []).filter(r => r.rating === 2).length;
+  const oneStarCount = (reviewsList || []).filter(r => r.rating === 1).length;
+
+  const fiveStarPct = Math.round((fiveStarsCount / totalCount) * 100);
+  const fourStarPct = Math.round((fourStarsCount / totalCount) * 100);
+  const threeStarPct = Math.round((threeStarsCount / totalCount) * 100);
+  const twoStarPct = Math.round((twoStarsCount / totalCount) * 100);
+  const oneStarPct = Math.round((oneStarCount / totalCount) * 100);
 
   return (
     <div className="reviews-page">
       {/* Banner */}
       <div className="page-header-banner">
         <div className="container">
-          <AnimatedSection anim="fade-down" delay="100" className="section-tag">VERIFIED REVIEWS</AnimatedSection>
-          <AnimatedSection as="h1" anim="fade-up" delay="200">TRAVELER <span>TESTIMONIALS</span></AnimatedSection>
-          <AnimatedSection as="p" anim="fade-up" delay="300">Read real experiences and reviews from our travelers across Coimbatore and South India.</AnimatedSection>
+          <AnimatedSection anim="fade-down" delay="100" className="section-tag">
+            {revContent.page_tag || "VERIFIED REVIEWS"}
+          </AnimatedSection>
+          <AnimatedSection as="h1" anim="fade-up" delay="200">
+            {revContent.page_title || "TRAVELER TESTIMONIALS"}
+          </AnimatedSection>
+          <AnimatedSection as="p" anim="fade-up" delay="300">
+            {revContent.page_subtitle || "Read real experiences and reviews from our travelers across Coimbatore and South India."}
+          </AnimatedSection>
         </div>
       </div>
 
@@ -109,46 +80,62 @@ const ReviewsPage = () => {
         {/* Rating Breakdown Card */}
         <AnimatedSection anim="fade-up" className="rating-overview-card">
           <div className="rating-left-box">
-            <div className="big-score">4.7</div>
+            <div className="big-score">{revContent.overall_rating || "4.7"}</div>
             <div className="score-stars">
               <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
             </div>
-            <span className="total-reviews-count">Based on 34+ Google Reviews</span>
+            <span className="total-reviews-count">
+              {revContent.review_source || `Based on ${reviewsList?.length || 34}+ Google Reviews`}
+            </span>
             <div className="google-partner-tag">
-              <FaGoogle /> Verified Google Business Profile
+              <FaCheckCircle /> Verified Google Business Profile
             </div>
           </div>
 
           <div className="rating-bars-box">
             <div className="bar-row">
               <span>5 Stars</span>
-              <div className="bar-bg"><div className="bar-fill" style={{ width: '92%' }}></div></div>
-              <span>92%</span>
+              <div className="bar-bg">
+                <div className="bar-fill" style={{ width: `${fiveStarPct}%` }}></div>
+              </div>
+              <span>{fiveStarPct}%</span>
             </div>
+
             <div className="bar-row">
               <span>4 Stars</span>
-              <div className="bar-bg"><div className="bar-fill" style={{ width: '8%' }}></div></div>
-              <span>8%</span>
+              <div className="bar-bg">
+                <div className="bar-fill" style={{ width: `${fourStarPct}%` }}></div>
+              </div>
+              <span>{fourStarPct}%</span>
             </div>
+
             <div className="bar-row">
               <span>3 Stars</span>
-              <div className="bar-bg"><div className="bar-fill" style={{ width: '0%' }}></div></div>
-              <span>0%</span>
+              <div className="bar-bg">
+                <div className="bar-fill" style={{ width: `${threeStarPct}%` }}></div>
+              </div>
+              <span>{threeStarPct}%</span>
             </div>
+
             <div className="bar-row">
               <span>2 Stars</span>
-              <div className="bar-bg"><div className="bar-fill" style={{ width: '0%' }}></div></div>
-              <span>0%</span>
+              <div className="bar-bg">
+                <div className="bar-fill" style={{ width: `${twoStarPct}%` }}></div>
+              </div>
+              <span>{twoStarPct}%</span>
             </div>
+
             <div className="bar-row">
               <span>1 Star</span>
-              <div className="bar-bg"><div className="bar-fill" style={{ width: '0%' }}></div></div>
-              <span>0%</span>
+              <div className="bar-bg">
+                <div className="bar-fill" style={{ width: `${oneStarPct}%` }}></div>
+              </div>
+              <span>{oneStarPct}%</span>
             </div>
           </div>
         </AnimatedSection>
 
-        {/* Filter Tabs */}
+        {/* Filter Bar */}
         <div className="reviews-filter-tabs">
           {categories.map((cat) => (
             <button 
@@ -159,83 +146,87 @@ const ReviewsPage = () => {
                 e.currentTarget?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
               }}
             >
-              {cat === 'All' ? 'All Reviews' : cat + ' Trips'}
+              {cat === 'All' ? 'All Reviews' : `${cat} Trips`}
             </button>
           ))}
         </div>
 
-        {/* Reviews Grid */}
+        {/* Reviews Full Grid */}
         <div className="reviews-full-grid">
-          {filteredReviews.map((review, idx) => (
-            <AnimatedSection key={idx} anim="fade-up" delay={String((idx % 3) * 100 + 100)} className="review-full-card">
+          {filteredReviews.map((rev, idx) => (
+            <AnimatedSection key={rev._id || idx} anim="fade-up" delay={String((idx % 3) * 100 + 100)} className="review-full-card">
               <div className="review-card-top">
-                <div className="avatar-circle">{review.name.charAt(0)}</div>
+                <div className="avatar-circle">
+                  {rev.name ? rev.name.charAt(0) : 'G'}
+                </div>
                 <div className="reviewer-meta">
-                  <h4>{review.name}</h4>
-                  <span className="review-trip">{review.trip}</span>
-                  <span className="review-date">{review.time}</span>
+                  <h4>{rev.name}</h4>
+                  <span className="review-trip">{rev.trip}</span>
+                  <span className="review-date">{rev.time}</span>
                 </div>
-                <div className="verified-badge" title="Verified Traveler">
-                  <FaCheckCircle />
-                </div>
+                <FaGoogle style={{ color: '#4285F4', fontSize: '1.2rem' }} />
               </div>
 
               <div className="review-stars-row">
-                {[...Array(review.rating)].map((_, i) => (
+                {[...Array(rev.rating || 5)].map((_, i) => (
                   <FaStar key={i} />
                 ))}
               </div>
 
               <p className="review-quote-text">
                 <FaQuoteLeft className="quote-icon-small" />
-                {review.text}
+                {rev.text}
               </p>
             </AnimatedSection>
           ))}
         </div>
 
-        {/* Interactive "Write a Review" Form */}
-        <AnimatedSection anim="fade-up" className="write-review-card">
-          <h2>Share Your Experience with <span>Spot Tours and Travels</span></h2>
-          <p>Traveled with us recently? We would love to hear your feedback!</p>
+        {/* Write a Review Section */}
+        <AnimatedSection anim="zoom-in" dur="slow" className="write-review-card">
+          <h2>Share Your Experience with Spot Tours and Travels</h2>
+          <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>
+            Traveled with us recently? We would love to hear your feedback!
+          </p>
 
           {showSubmittedSuccess && (
-            <div className="review-success-alert">
-              🎉 Thank you for your review! Your feedback has been published below.
+            <div style={{ background: '#ecfdf5', color: '#047857', padding: '12px 16px', borderRadius: '10px', marginBottom: '1rem', textAlign: 'center', fontWeight: 'bold' }}>
+              🎉 Thank you for your review! Your feedback has been published.
             </div>
           )}
 
-          <form className="write-review-form" onSubmit={handleReviewSubmit}>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Your Name *</label>
+          <form onSubmit={handleReviewSubmit}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>Your Name *</label>
                 <input 
                   type="text" 
                   required 
                   placeholder="e.g. Ramesh Kumar" 
                   value={newReview.name}
                   onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'var(--bg-light)', outline: 'none', fontFamily: 'inherit' }}
                 />
               </div>
 
-              <div className="form-group">
-                <label>Trip / Package Taken *</label>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>Trip / Package Taken *</label>
                 <input 
                   type="text" 
                   required 
                   placeholder="e.g. Ooty Weekend Family Tour" 
                   value={newReview.trip}
                   onChange={(e) => setNewReview({ ...newReview, trip: e.target.value })}
+                  style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'var(--bg-light)', outline: 'none', fontFamily: 'inherit' }}
                 />
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Category</label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>Category</label>
                 <CustomSelect
                   value={newReview.category}
-                  onChange={(e) => setNewReview({ ...newReview, category: e.target.value })}
+                  onChange={(val) => setNewReview({ ...newReview, category: val })}
                   options={[
                     { value: 'Family', label: 'Family Holiday' },
                     { value: 'Honeymoon', label: 'Honeymoon' },
@@ -246,49 +237,38 @@ const ReviewsPage = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label>Rating</label>
-                <div className="star-rating-picker" role="radiogroup" aria-label="Rating Selection">
-                  <div className="star-buttons-group">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        className={`star-pick-btn ${star <= (hoverRating || newReview.rating) ? 'active' : ''}`}
-                        onMouseEnter={() => setHoverRating(star)}
-                        onMouseLeave={() => setHoverRating(0)}
-                        onClick={() => setNewReview({ ...newReview, rating: star })}
-                        aria-label={`${star} Stars`}
-                      >
-                        <FaStar />
-                      </button>
-                    ))}
-                  </div>
-                  <span className="rating-desc-label">
-                    {({
-                      5: '(5 - Exceptional)',
-                      4: '(4 - Very Good)',
-                      3: '(3 - Good)',
-                      2: '(2 - Fair)',
-                      1: '(1 - Poor)'
-                    })[hoverRating || newReview.rating]}
-                  </span>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>Rating</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '4px' }}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.4rem', color: star <= (hoverRating || newReview.rating) ? 'var(--accent)' : '#CBD5E1', padding: '0 2px' }}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      onClick={() => setNewReview({ ...newReview, rating: star })}
+                    >
+                      <FaStar />
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="form-group">
-              <label>Your Review & Feedback *</label>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px' }}>Your Review & Feedback *</label>
               <textarea 
                 rows="4" 
                 required 
                 placeholder="Tell us about the cab driver, hotel stay, tour coordination..."
                 value={newReview.text}
                 onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
+                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--card-border)', background: 'var(--bg-light)', outline: 'none', fontFamily: 'inherit', resize: 'vertical' }}
               ></textarea>
             </div>
 
-            <button type="submit" className="btn-primary submit-review-btn">
+            <button type="submit" className="btn-primary" style={{ display: 'block', width: '100%', padding: '12px' }}>
               Submit Your Review
             </button>
           </form>

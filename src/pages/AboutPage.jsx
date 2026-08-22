@@ -12,11 +12,14 @@ import {
   FaHandshake, 
   FaCheck 
 } from 'react-icons/fa';
-import { teamMembers, agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import './AboutPage.css';
 
 const AboutPage = () => {
+  const { teamMembers, agencyInfo, content } = useData();
+  const about = content?.about || {};
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -26,9 +29,15 @@ const AboutPage = () => {
       {/* Banner */}
       <div className="page-header-banner">
         <div className="container">
-          <AnimatedSection anim="fade-down" delay="100" className="section-tag">ABOUT OUR AGENCY</AnimatedSection>
-          <AnimatedSection as="h1" anim="fade-up" delay="200">SPOT TOURS <span>&amp; TRAVELS</span></AnimatedSection>
-          <AnimatedSection as="p" anim="fade-up" delay="300">The Spot For Need's — Coimbatore's Most Trusted Travel Companion for Domestic &amp; Overseas Holidays</AnimatedSection>
+          <AnimatedSection anim="fade-down" delay="100" className="section-tag">
+            {about.page_tag || "ABOUT OUR AGENCY"}
+          </AnimatedSection>
+          <AnimatedSection as="h1" anim="fade-up" delay="200">
+            {about.page_title || "SPOT TOURS & TRAVELS"}
+          </AnimatedSection>
+          <AnimatedSection as="p" anim="fade-up" delay="300">
+            {about.page_subtitle || "The Spot For Need's — Coimbatore's Most Trusted Travel Companion for Domestic & Overseas Holidays"}
+          </AnimatedSection>
         </div>
       </div>
 
@@ -36,34 +45,34 @@ const AboutPage = () => {
         {/* Story Grid */}
         <div className="about-story-grid">
           <AnimatedSection anim="fade-right" className="story-content">
-            <div className="section-tag">OUR JOURNEY</div>
-            <h2>CREATING MEMORIES <span>THAT LAST A LIFETIME</span></h2>
+            <div className="section-tag">{about.journey_tag || "OUR JOURNEY"}</div>
+            <h2>{about.journey_title || "CREATING MEMORIES THAT LAST A LIFETIME"}</h2>
             <p className="story-lead">
-              Founded on the belief that travel should be enriching, transparent, and completely stress-free, <strong>Spot Tours and Travels</strong> has grown into one of Coimbatore's premier travel agencies and tour operators.
+              {about.lead_paragraph || "Founded on the belief that travel should be enriching, transparent, and completely stress-free, Spot Tours and Travels has grown into one of Coimbatore's premier travel agencies and tour operators."}
             </p>
             <p>
-              Located conveniently on <strong>Palakkad - Coimbatore Road (near SBI Bank, Pulakadu, Kuniyamuthur)</strong>, we specialize in organizing customized family vacations, romantic honeymoons, spiritual temple pilgrimages, corporate outings, and reliable 24/7 outstation tourist cab rentals.
+              {about.story_paragraph_1 || "Located conveniently on Palakkad - Coimbatore Road (near SBI Bank, Pulakadu, Kuniyamuthur), we specialize in organizing customized family vacations, romantic honeymoons, spiritual temple pilgrimages, corporate outings, and reliable 24/7 outstation tourist cab rentals."}
             </p>
             <p>
-              Under our brand promise <em>"The Spot For Need's"</em>, we take care of every minute detail: flight/train ticketing, star hotel reservations, local sightseeing with experienced polite chauffeurs, and dedicated trip coordinator assistance.
+              {about.story_paragraph_2 || "Under our brand promise 'The Spot For Need's', we take care of every minute detail: flight/train ticketing, star hotel reservations, local sightseeing with experienced polite chauffeurs, and dedicated trip coordinator assistance."}
             </p>
 
             <div className="story-highlights-list">
-              <div><FaCheck className="check-icon" /> 100% Customized Itineraries to match your budget</div>
-              <div><FaCheck className="check-icon" /> Transparent, upfront pricing with zero hidden surcharges</div>
-              <div><FaCheck className="check-icon" /> Handpicked 3-Star, 4-Star &amp; 5-Star verified hygienic resorts</div>
-              <div><FaCheck className="check-icon" /> Well-maintained AC Sedans, Innovas, and Tempo Travelers</div>
+              <div><FaCheck className="check-icon" /> {about.highlight_1 || "100% Customized Itineraries to match your budget"}</div>
+              <div><FaCheck className="check-icon" /> {about.highlight_2 || "Transparent, upfront pricing with zero hidden surcharges"}</div>
+              <div><FaCheck className="check-icon" /> {about.highlight_3 || "Handpicked 3-Star, 4-Star & 5-Star verified hygienic resorts"}</div>
+              <div><FaCheck className="check-icon" /> {about.highlight_4 || "Well-maintained AC Sedans, Innovas, and Tempo Travelers"}</div>
             </div>
           </AnimatedSection>
 
           <AnimatedSection anim="fade-left" delay="150" className="story-image-wrap">
             <img 
-              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1000&auto=format&fit=crop" 
+              src={about.office_photo || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=1000&auto=format&fit=crop"} 
               alt="Spot Tours and Travels Office and Travel Experience" 
             />
             <div className="story-floating-stat">
-              <span className="stat-score">4.7★</span>
-              <span className="stat-text">Google Rating (34+ Reviews)</span>
+              <span className="stat-score">{about.floating_stat_score || "4.7★"}</span>
+              <span className="stat-text">{about.floating_stat_text || "Google Rating (34+ Reviews)"}</span>
             </div>
           </AnimatedSection>
         </div>
@@ -78,26 +87,26 @@ const AboutPage = () => {
           <div className="credentials-grid">
             <AnimatedSection anim="flip-up" delay="100" className="credential-card">
               <FaAward className="credential-icon" />
-              <h3>4.7 Google Rating</h3>
-              <p>Consistently rated 4.7 stars across 34+ verified customer reviews for top-notch service and punctuality.</p>
+              <h3>{about.credential_1_title || "4.7 Google Rating"}</h3>
+              <p>{about.credential_1_desc || "Consistently rated 4.7 stars across 34+ verified customer reviews for top-notch service and punctuality."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="flip-up" delay="200" className="credential-card">
               <FaShieldAlt className="credential-icon" />
-              <h3>Licensed Tour Operator</h3>
-              <p>Government-registered travel agency with commercial passenger transport permits and safety assurance.</p>
+              <h3>{about.credential_2_title || "Licensed Tour Operator"}</h3>
+              <p>{about.credential_2_desc || "Government-registered travel agency with commercial passenger transport permits and safety assurance."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="flip-up" delay="300" className="credential-card">
               <FaHandshake className="credential-icon" />
-              <h3>Transparent Pricing</h3>
-              <p>Clear, itemized billing including tolls, driver allowances, and taxes with zero surprise charges.</p>
+              <h3>{about.credential_3_title || "Transparent Pricing"}</h3>
+              <p>{about.credential_3_desc || "Clear, itemized billing including tolls, driver allowances, and taxes with zero surprise charges."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="flip-up" delay="400" className="credential-card">
               <FaUserCheck className="credential-icon" />
-              <h3>Senior &amp; Family Care</h3>
-              <p>Special pacing, ground-floor room allocations, and patient drivers trained for elder comfort.</p>
+              <h3>{about.credential_4_title || "Senior & Family Care"}</h3>
+              <p>{about.credential_4_desc || "Special pacing, ground-floor room allocations, and patient drivers trained for elder comfort."}</p>
             </AnimatedSection>
           </div>
         </div>
@@ -113,8 +122,8 @@ const AboutPage = () => {
           </AnimatedSection>
 
           <div className="team-grid">
-            {teamMembers.map((member, idx) => (
-              <AnimatedSection key={idx} anim="zoom-in" delay={String((idx % 4) * 100 + 100)} className="team-card">
+            {(teamMembers || []).map((member, idx) => (
+              <AnimatedSection key={member._id || member.id || idx} anim="zoom-in" delay={String((idx % 4) * 100 + 100)} className="team-card">
                 <div className="team-img-wrap">
                   <img src={member.image} alt={member.name} />
                 </div>
@@ -153,4 +162,3 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
-

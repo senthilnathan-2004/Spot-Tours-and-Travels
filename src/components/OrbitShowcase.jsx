@@ -10,6 +10,7 @@ import {
   FaChevronRight, 
   FaCompass 
 } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from './AnimatedSection';
 import './OrbitShowcase.css';
 
@@ -97,6 +98,9 @@ const showcaseDestinations = [
 ];
 
 const OrbitShowcase = () => {
+  const { content } = useData();
+  const sc = content?.showcases || {};
+
   const [isPaused, setIsPaused] = useState(false);
   const [rotationOffset, setRotationOffset] = useState(0);
   const [activeCardIndex, setActiveCardIndex] = useState(null);
@@ -118,13 +122,13 @@ const OrbitShowcase = () => {
         {/* Section Header */}
         <AnimatedSection anim="fade-up" className="section-header-left orbit-header-left">
           <div className="section-tag orbit-tag">
-            <FaCompass className="orbit-tag-icon" /> 360° IMMERSIVE EXPLORER
+            <FaCompass className="orbit-tag-icon" /> {sc.orbit_tag || "360° IMMERSIVE EXPLORER"}
           </div>
           <h2 className="section-title section-title-left">
-            DISCOVER THE WORLD IN <span>360° ORBIT</span>
+            {sc.orbit_title ? sc.orbit_title : <>DISCOVER THE WORLD IN <span>360° ORBIT</span></>}
           </h2>
           <p className="section-subtitle">
-            Glide through iconic global wonders. Hover over any destination card to pause the orbit and explore trip details.
+            {sc.orbit_subtitle || "Glide through iconic global wonders. Hover over any destination card to pause the orbit and explore trip details."}
           </p>
         </AnimatedSection>
       </div>

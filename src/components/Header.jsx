@@ -7,11 +7,12 @@ import {
   FaTimes, 
   FaMapMarkedAlt 
 } from 'react-icons/fa';
-import { agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import logoImg from '../assets/logo.jpg';
 import './Header.css';
 
 const Header = () => {
+  const { agencyInfo } = useData();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();

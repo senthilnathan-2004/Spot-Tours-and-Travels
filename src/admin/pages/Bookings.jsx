@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { MdVisibility, MdClose, MdPhone, MdCalendarToday, MdPeople, MdDirectionsCar, MdHotel, MdRefresh } from 'react-icons/md';
 import { FaWhatsapp } from 'react-icons/fa';
 import { api } from '../utils/api.js';
+import AdminAlert from '../components/AdminAlert.jsx';
 
 const STATUS_BADGE = {
   pending: 'adm-badge-pending',
@@ -95,7 +96,10 @@ export default function Bookings() {
         </button>
       </div>
 
-      {success && <div className="adm-alert adm-alert-success">✅ {success}</div>}
+      <AdminAlert 
+        alert={success ? { type: 'success', msg: success } : (error ? { type: 'error', msg: error } : null)} 
+        onClose={() => { setSuccess(''); setError(''); }} 
+      />
 
       {/* Filter Tabs & Search */}
       <div className="adm-filters">

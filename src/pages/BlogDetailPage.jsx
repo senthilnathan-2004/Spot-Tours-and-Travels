@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { FaCalendarAlt, FaUser, FaClock, FaArrowLeft, FaPhoneAlt, FaWhatsapp, FaShareAlt } from 'react-icons/fa';
-import { blogPosts, agencyInfo } from '../data/travelData';
+import { FaCalendarAlt, FaUser, FaClock, FaArrowLeft, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import './BlogDetailPage.css';
 
 const BlogDetailPage = () => {
   const { slug } = useParams();
+  const { blogs: blogPosts, agencyInfo } = useData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  const post = blogPosts.find(p => p.slug === slug) || blogPosts[0];
+  const post = (blogPosts || []).find(p => p.slug === slug || p.id === slug) || (blogPosts && blogPosts[0]) || {};
 
   return (
     <div className="blog-detail-page">
@@ -36,14 +37,26 @@ const BlogDetailPage = () => {
           </div>
         </AnimatedSection>
 
-        <div className="article-hero-image">
-          <img src={post.image} alt={post.title} />
-        </div>
+        {post.image && (
+          <div className="article-hero-image">
+            <img src={post.image} alt={post.title} />
+          </div>
+        )}
 
         <div className="article-content-body">
-          <p className="article-lead-text">{post.excerpt}</p>
+          {post.excerpt && <p className="article-lead-text">{post.excerpt}</p>}
           
-          <div className="article-markdown" dangerouslySetInnerHTML={{ __html: post.content.replace(/\n\n/g, '<br/><br/>').replace(/### (.*?)\n/g, '<h3>$1</h3>').replace(/- \*\*(.*?)\*\*: (.*?)\n/g, '<li><strong>$1:</strong> $2</li>') }} />
+          {post.content && (
+            <div 
+              className="article-markdown" 
+              dangerouslySetInnerHTML={{ 
+                __html: post.content
+                  .replace(/\n\n/g, '<br/><br/>')
+                  .replace(/### (.*?)\n/g, '<h3>$1</h3>')
+                  .replace(/- \*\*(.*?)\*\*: (.*?)\n/g, '<li><strong>$1:</strong> $2</li>') 
+              }} 
+            />
+          )}
         </div>
 
         {/* Travel Agency Callout in Blog */}
@@ -57,7 +70,7 @@ const BlogDetailPage = () => {
               <FaPhoneAlt /> Call {agencyInfo.phone}
             </a>
             <a 
-              href={`https://wa.me/${agencyInfo.whatsappRaw}?text=Hi%20Spot%20Tours,%20I%20read%20your%20blog%20post%20about%20${encodeURIComponent(post.title)}`}
+              href={`https://wa.me/${agencyInfo.whatsappRaw}?text=Hi%20Spot%20Tours,%20I%20read%20your%20blog%20post%20about%20${encodeURIComponent(post.title || '')}`}
               target="_blank"
               rel="noreferrer"
               className="btn-whatsapp"

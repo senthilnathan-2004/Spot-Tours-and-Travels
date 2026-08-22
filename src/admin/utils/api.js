@@ -1,9 +1,19 @@
-// Base URL: in production always use same origin (''), in dev use VITE_API_BASE_URL or fallback to localhost:3001
-const BASE = import.meta.env.PROD 
-  ? '' 
-  : (import.meta.env.VITE_API_BASE_URL || '');
+function getBaseUrl() {
+  const custom = import.meta.env.VITE_API_BASE_URL;
+  if (custom && typeof custom === 'string' && custom.trim() !== '') {
+    const trimmed = custom.trim().replace(/\/+$/, '');
+    if (import.meta.env.DEV) {
+      return trimmed;
+    }
+    if (typeof window !== 'undefined' && trimmed.startsWith('http') && !trimmed.includes(window.location.host)) {
+      return trimmed;
+    }
+  }
+  return '';
+}
 
 async function request(path, options = {}) {
+  const BASE = getBaseUrl();
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('spot_admin_token') : null;
   const headers = {
     'Content-Type': 'application/json',
@@ -38,10 +48,42 @@ export const api = {
   me: () => request('/api/auth/me'),
 
   // Packages
-  getPackages: () => request('/api/packages/all'),
+  getPackages: () => request('/api/packages'),
+  getAllPackages: () => request('/api/packages/all'),
+  getPackage: (id) => request(`/api/packages/${id}`),
   createPackage: (data) => request('/api/packages', { method: 'POST', body: JSON.stringify(data) }),
   updatePackage: (id, data) => request(`/api/packages/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deletePackage: (id) => request(`/api/packages/${id}`, { method: 'DELETE' }),
+
+  // Destinations
+  getDestinations: () => request('/api/destinations'),
+  getAllDestinations: () => request('/api/destinations/all'),
+  getDestination: (id) => request(`/api/destinations/${id}`),
+  createDestination: (data) => request('/api/destinations', { method: 'POST', body: JSON.stringify(data) }),
+  updateDestination: (id, data) => request(`/api/destinations/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteDestination: (id) => request(`/api/destinations/${id}`, { method: 'DELETE' }),
+
+  // Blogs
+  getBlogs: () => request('/api/blogs'),
+  getAllBlogs: () => request('/api/blogs/all'),
+  getBlog: (slug) => request(`/api/blogs/${slug}`),
+  createBlog: (data) => request('/api/blogs', { method: 'POST', body: JSON.stringify(data) }),
+  updateBlog: (id, data) => request(`/api/blogs/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteBlog: (id) => request(`/api/blogs/${id}`, { method: 'DELETE' }),
+
+  // Reviews
+  getReviews: () => request('/api/reviews'),
+  getAllReviews: () => request('/api/reviews/all'),
+  createReview: (data) => request('/api/reviews', { method: 'POST', body: JSON.stringify(data) }),
+  updateReview: (id, data) => request(`/api/reviews/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteReview: (id) => request(`/api/reviews/${id}`, { method: 'DELETE' }),
+
+  // Services
+  getServices: () => request('/api/services'),
+  getAllServices: () => request('/api/services/all'),
+  createService: (data) => request('/api/services', { method: 'POST', body: JSON.stringify(data) }),
+  updateService: (id, data) => request(`/api/services/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteService: (id) => request(`/api/services/${id}`, { method: 'DELETE' }),
 
   // Bookings
   getBookings: (params = {}) => {
@@ -65,6 +107,7 @@ export const api = {
   // Content
   getContent: () => request('/api/content'),
   updateContent: (section, key, value) => request(`/api/content/${section}/${key}`, { method: 'PUT', body: JSON.stringify({ value }) }),
+  updateBulkContent: (updates) => request('/api/content/batch', { method: 'PUT', body: JSON.stringify({ updates }) }),
 
   // Team
   getTeam: () => request('/api/team'),

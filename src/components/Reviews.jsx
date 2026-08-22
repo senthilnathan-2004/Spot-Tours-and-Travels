@@ -1,54 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar, FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useData } from '../context/DataContext';
 import AnimatedSection from './AnimatedSection';
 import './Reviews.css';
 
-const reviewData = [
-  {
-    name: "Praveen Kumar",
-    time: "2 weeks ago",
-    rating: 5,
-    trip: "Family Kerala Tour",
-    text: "Booked our family Kerala tour (Munnar & Alleppey) with Spot Tours and Travels Coimbatore. Excellent vehicle condition, hygienic resorts, and punctual driver. The entire trip coordination was seamless and stress-free. Highly recommended in Kuniyamuthur!"
-  },
-  {
-    name: "Ananya & Karthik",
-    time: "a month ago",
-    rating: 5,
-    trip: "Bali Honeymoon Package",
-    text: "We planned our honeymoon to Bali through Spot Tours and Travels. From flight ticketing and visa guidance to romantic candlelit dinner and private sightseeing, everything was executed flawlessly. Best travel agency in Coimbatore!"
-  },
-  {
-    name: "Suresh Sundaram",
-    time: "3 weeks ago",
-    rating: 5,
-    trip: "Rameswaram Temple Tour",
-    text: "Organized a spiritual pilgrimage trip to Rameswaram & Madurai for my elderly parents. The AC tourist cab was spotless and the driver was extremely patient and courteous with senior citizens. Truly 'The Spot For Needs'!"
-  },
-  {
-    name: "Deepak Raj",
-    time: "2 months ago",
-    rating: 5,
-    trip: "Goa Friends Vacation",
-    text: "Spot Tours and Travels gave us the best transparent pricing for our Goa trip with friends. No hidden charges, great resort right next to the beach, and constant support from their Coimbatore office."
-  },
-  {
-    name: "Divya Ramesh",
-    time: "1 month ago",
-    rating: 5,
-    trip: "Ooty & Kodaikanal Tour",
-    text: "Top-notch travel agency near Kuniyamuthur SBI Bank. Prompt train ticket reservations and a fantastic customized hill station itinerary. The resort stay in Ooty was breathtaking."
-  },
-  {
-    name: "Mohammed Farooq",
-    time: "3 months ago",
-    rating: 5,
-    trip: "Dubai Holiday Package",
-    text: "Booked a Dubai holiday for our family. Smooth tourist visa processing, hotel stays, desert safari, and Burj Khalifa tickets. Spot Tours handled everything end-to-end with high professionalism."
-  }
-];
-
 const Reviews = () => {
+  const { reviews: reviewData } = useData();
   const [reviewIndex, setReviewIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(3);
@@ -68,7 +25,8 @@ const Reviews = () => {
     return () => window.removeEventListener('resize', updateItemsPerPage);
   }, []);
 
-  const maxReviewIndex = Math.max(0, reviewData.length - itemsPerPage);
+  const reviewsList = reviewData || [];
+  const maxReviewIndex = Math.max(0, reviewsList.length - itemsPerPage);
 
   useEffect(() => {
     if (isHovered) return;
@@ -102,7 +60,7 @@ const Reviews = () => {
               <div className="stars-summary">
                 <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
               </div>
-              <span className="rating-count">Based on 34+ Google Reviews</span>
+              <span className="rating-count">Based on {reviewsList.length || 34}+ Google Reviews</span>
             </div>
           </div>
         </AnimatedSection>
@@ -119,11 +77,11 @@ const Reviews = () => {
             className="slider-track"
             style={{ transform: `translateX(calc(-${reviewIndex} * (100% + 24px) / ${itemsPerPage}))` }}
           >
-            {reviewData.map((review, idx) => (
-              <div key={idx} className="slider-card-item">
+            {reviewsList.map((review, idx) => (
+              <div key={review._id || idx} className="slider-card-item">
                 <div className="review-card">
                   <div className="review-header">
-                    <div className="avatar">{review.name.charAt(0)}</div>
+                    <div className="avatar">{review.name ? review.name.charAt(0) : 'G'}</div>
                     <div className="reviewer-info">
                       <h4>{review.name}</h4>
                       <div className="review-trip-tag">{review.trip}</div>
@@ -132,7 +90,7 @@ const Reviews = () => {
                   </div>
                   
                   <div className="stars">
-                    {[...Array(review.rating)].map((_, i) => (
+                    {[...Array(review.rating || 5)].map((_, i) => (
                       <FaStar key={i} />
                     ))}
                   </div>

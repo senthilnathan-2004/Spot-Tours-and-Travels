@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaPhoneAlt, FaWhatsapp, FaMapMarkerAlt, FaEnvelope, FaInstagram, FaFacebookF, FaStar } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
-import { agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import logoImg from '../assets/logo.jpg';
 import AnimatedSection from './AnimatedSection';
 import './Footer.css';
 
 const Footer = () => {
+  const { agencyInfo, content } = useData();
+  const agency = content?.agency || {};
   return (
     <footer className="footer">
       <div className="container footer-content">

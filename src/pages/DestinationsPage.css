@@ -12,11 +12,21 @@
 
 .destination-tabs-bar {
   display: flex;
+  flex-wrap: nowrap;
   gap: 12px;
   margin-bottom: 2.5rem;
   overflow-x: auto;
-  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  padding: 4px 6px 10px 4px;
   justify-content: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.destination-tabs-bar::-webkit-scrollbar {
+  display: none;
 }
 
 .dest-tab-btn {
@@ -31,6 +41,8 @@
   cursor: pointer;
   transition: all 0.25s ease;
   white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: center;
 }
 
 .dest-tab-btn:hover {

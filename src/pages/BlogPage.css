@@ -22,7 +22,18 @@
 .blog-categories {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.blog-categories::-webkit-scrollbar {
+  display: none;
 }
 
 .cat-btn {
@@ -35,6 +46,9 @@
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: center;
 }
 
 .cat-btn:hover {

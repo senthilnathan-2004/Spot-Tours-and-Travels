@@ -99,14 +99,24 @@
   border-radius: 10px;
 }
 
-/* Reviews Filter Tabs */
+/* Reviews Filter Tabs - Single Row Horizontal Scroll */
 .reviews-filter-tabs {
   display: flex;
+  flex-wrap: nowrap;
   gap: 10px;
   margin-bottom: 2rem;
   overflow-x: auto;
-  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  padding: 4px 6px 10px 4px;
   justify-content: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.reviews-filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .review-tab-btn {
@@ -120,6 +130,8 @@
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: center;
 }
 
 .review-tab-btn:hover {

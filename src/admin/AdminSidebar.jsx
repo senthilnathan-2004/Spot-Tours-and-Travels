@@ -9,7 +9,11 @@ import {
   MdOutlineAdminPanelSettings,
   MdOutlinePublic,
   MdOutlineTravelExplore,
-  MdOutlineStarOutline
+  MdOutlineStarOutline,
+  MdOutlinePlace,
+  MdOutlineRateReview,
+  MdOutlineMiscellaneousServices,
+  MdOutlineAutoStories
 } from 'react-icons/md';
 import AdminNavSection from './components/AdminNavSection.jsx';
 import AdminNavItem from './components/AdminNavItem.jsx';
@@ -72,12 +76,6 @@ export default function AdminSidebar({
             onClick={handleNavClick}
           />
           <AdminNavItem
-            to="/admin/packages"
-            icon={MdOutlineCardTravel}
-            label="Tour Packages"
-            onClick={handleNavClick}
-          />
-          <AdminNavItem
             to="/admin/bookings"
             icon={MdOutlineBookmarkBorder}
             label="Bookings"
@@ -95,24 +93,54 @@ export default function AdminSidebar({
           />
         </AdminNavSection>
 
-        {/* MANAGEMENT SECTION */}
-        <AdminNavSection title="MANAGEMENT">
+        {/* CMS & CONTENT SECTION */}
+        <AdminNavSection title="CONTENT & CATALOG">
+          <AdminNavItem
+            to="/admin/packages"
+            icon={MdOutlineCardTravel}
+            label="Tour Packages"
+            onClick={handleNavClick}
+          />
+          <AdminNavItem
+            to="/admin/destinations"
+            icon={MdOutlinePlace}
+            label="Destinations"
+            onClick={handleNavClick}
+          />
+          <AdminNavItem
+            to="/admin/blogs"
+            icon={MdOutlineAutoStories}
+            label="Blogs & Guides"
+            onClick={handleNavClick}
+          />
+          <AdminNavItem
+            to="/admin/reviews"
+            icon={MdOutlineRateReview}
+            label="Guest Reviews"
+            onClick={handleNavClick}
+          />
+          <AdminNavItem
+            to="/admin/services"
+            icon={MdOutlineMiscellaneousServices}
+            label="Travel Services"
+            onClick={handleNavClick}
+          />
           <AdminNavItem
             to="/admin/content"
             icon={MdOutlineArticle}
-            label="Site Content"
+            label="Page Content CMS"
             onClick={handleNavClick}
           />
           <AdminNavItem
             to="/admin/team"
             icon={MdOutlineAdminPanelSettings}
-            label="Team & Admins"
+            label="Team & Staff"
             onClick={handleNavClick}
           />
         </AdminNavSection>
 
         {/* PUBLIC SECTION */}
-        <AdminNavSection title="PUBLIC">
+        <AdminNavSection title="PUBLIC PAGES">
           <AdminNavItem
             to="/"
             icon={MdOutlinePublic}
@@ -128,9 +156,16 @@ export default function AdminSidebar({
             onClick={handleNavClick}
           />
           <AdminNavItem
+            to="/destinations"
+            icon={MdOutlinePlace}
+            label="Destinations"
+            external
+            onClick={handleNavClick}
+          />
+          <AdminNavItem
             to="/reviews"
             icon={MdOutlineStarOutline}
-            label="Guest Reviews"
+            label="Reviews Page"
             external
             onClick={handleNavClick}
           />

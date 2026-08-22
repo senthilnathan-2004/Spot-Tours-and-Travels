@@ -17,6 +17,14 @@ server.on('error', (err) => {
   }
 });
 
+// Global error recovery
+process.on('uncaughtException', (err) => {
+  console.error('⚠️ Uncaught Exception:', err.message);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('⚠️ Unhandled Rejection:', reason);
+});
+
 // Keep event loop alive
 process.on('SIGTERM', () => server.close());
 process.on('SIGINT', () => server.close());

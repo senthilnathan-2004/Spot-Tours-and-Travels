@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaClock, FaArrowRight, FaSearch } from 'react-icons/fa';
-import { blogPosts } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import AnimatedSection from '../components/AnimatedSection';
 import './BlogPage.css';
 
 const BlogPage = () => {
+  const { blogs: blogPosts, content } = useData();
+  const blogContent = content?.blog_page || {};
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -13,12 +16,12 @@ const BlogPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const categories = ['All', 'Hill Stations', 'Pilgrimage', 'International'];
+  const categories = ['All', 'Hill Stations', 'Pilgrimage', 'International', 'Travel Tips', 'Honeymoon'];
 
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = (blogPosts || []).filter((post) => {
     const matchesSearch = searchTerm === '' || 
-      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      (post.title && post.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
 
@@ -30,9 +33,15 @@ const BlogPage = () => {
       {/* Banner */}
       <div className="page-header-banner">
         <div className="container">
-          <AnimatedSection anim="fade-down" delay="100" className="section-tag">TRAVEL GUIDES & TIPS</AnimatedSection>
-          <AnimatedSection as="h1" anim="fade-up" delay="200">SPOT TOURS <span>TRAVEL BLOG</span></AnimatedSection>
-          <AnimatedSection as="p" anim="fade-up" delay="300">Expert travel advice, custom itinerary guides, temple circuits, and packing tips from Coimbatore travel specialists.</AnimatedSection>
+          <AnimatedSection anim="fade-down" delay="100" className="section-tag">
+            {blogContent.page_tag || "TRAVEL GUIDES & TIPS"}
+          </AnimatedSection>
+          <AnimatedSection as="h1" anim="fade-up" delay="200">
+            {blogContent.page_title || "SPOT TOURS TRAVEL BLOG"}
+          </AnimatedSection>
+          <AnimatedSection as="p" anim="fade-up" delay="300">
+            {blogContent.page_subtitle || "Expert travel advice, custom itinerary guides, temple circuits, and packing tips from Coimbatore travel specialists."}
+          </AnimatedSection>
         </div>
       </div>
 
@@ -68,7 +77,7 @@ const BlogPage = () => {
         {/* Blog Grid */}
         <div className="blog-grid">
           {filteredPosts.map((post, idx) => (
-            <AnimatedSection as="article" key={post.id} anim="fade-up" delay={String((idx % 3) * 150 + 100)} className="blog-card">
+            <AnimatedSection as="article" key={post._id || post.id || post.slug} anim="fade-up" delay={String((idx % 3) * 150 + 100)} className="blog-card">
               <div className="blog-img-wrap">
                 <img src={post.image} alt={post.title} loading="lazy" />
                 <span className="blog-cat-badge">{post.category}</span>

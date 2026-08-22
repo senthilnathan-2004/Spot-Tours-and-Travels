@@ -3,6 +3,7 @@ import { MdAdd, MdEdit, MdDelete, MdVisibility, MdClose, MdStar, MdCheck, MdTren
 import { api } from '../utils/api.js';
 import AdminImageUpload from '../components/AdminImageUpload.jsx';
 import AdminGalleryUpload from '../components/AdminGalleryUpload.jsx';
+import AdminAlert from '../components/AdminAlert.jsx';
 
 const EMPTY_PKG = {
   id: '', title: '', destination: '', region: '', theme: '',
@@ -120,7 +121,10 @@ export default function Packages() {
         </button>
       </div>
 
-      {success && <div className="adm-alert adm-alert-success">✅ {success}</div>}
+      <AdminAlert 
+        alert={success ? { type: 'success', msg: success } : (error ? { type: 'error', msg: error } : null)} 
+        onClose={() => { setSuccess(''); setError(''); }} 
+      />
 
       {/* Filters Bar */}
       <div className="adm-filters">
@@ -189,8 +193,8 @@ export default function Packages() {
                           <div style={{ fontSize: '0.78rem', color: 'var(--adm-text-muted)', display: 'flex', gap: 8, alignItems: 'center', marginTop: 2 }}>
                             <span>📍 {pkg.destination}</span>
                             {pkg.popular && (
-                              <span style={{ background: '#FEF3C7', color: '#D97706', padding: '1px 6px', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem' }}>
-                                ⭐ POPULAR
+                              <span style={{ background: '#FEF3C7', color: '#D97706', padding: '2px 8px', borderRadius: 4, fontWeight: 700, fontSize: '0.7rem', letterSpacing: '0.4px' }}>
+                                POPULAR
                               </span>
                             )}
                           </div>

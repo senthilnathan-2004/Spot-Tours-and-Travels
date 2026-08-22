@@ -13,7 +13,7 @@ import {
   FaChevronLeft,
   FaChevronRight
 } from 'react-icons/fa';
-import { tourPackages, destinationsList, agencyInfo } from '../data/travelData';
+import { useData } from '../context/DataContext';
 import Services from '../components/Services';
 import Reviews from '../components/Reviews';
 import MapSection from '../components/MapSection';
@@ -31,17 +31,19 @@ const CountUpNumber = ({ target, duration = 2000, decimals = 0, suffix = '' }) =
     let startTimestamp = null;
     let frameId;
 
+    const numericTarget = typeof target === 'number' ? target : parseFloat(String(target).replace(/[^0-9.]/g, '')) || 0;
+
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       // Easing function (ease-out cubic)
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      setValue(easeOut * target);
+      setValue(easeOut * numericTarget);
 
       if (progress < 1) {
         frameId = requestAnimationFrame(step);
       } else {
-        setValue(target);
+        setValue(numericTarget);
       }
     };
 
@@ -65,8 +67,12 @@ const CountUpNumber = ({ target, duration = 2000, decimals = 0, suffix = '' }) =
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { packages: tourPackages, destinations: destinationsList, agencyInfo, content } = useData();
 
-  const featuredDestinations = destinationsList.slice(0, 6);
+  const heroContent = content?.hero || {};
+  const whyUsContent = content?.why_us || {};
+
+  const featuredDestinations = (destinationsList || []).slice(0, 6);
 
   // Packages Slider state
   const [pkgIndex, setPkgIndex] = useState(0);
@@ -88,7 +94,7 @@ const HomePage = () => {
     return () => window.removeEventListener('resize', updateItemsPerPage);
   }, []);
 
-  const maxPkgIndex = Math.max(0, tourPackages.length - itemsPerPage);
+  const maxPkgIndex = Math.max(0, (tourPackages?.length || 0) - itemsPerPage);
 
   useEffect(() => {
     if (isPkgHovered) return;
@@ -114,41 +120,41 @@ const HomePage = () => {
         <div className="hero-overlay"></div>
         <div className="container hero-content">
           <AnimatedSection anim="fade-down" delay="100" className="hero-badge">
-            <span>COIMBATORE'S PREMIER TRAVEL PARTNER</span>
+            <span>{heroContent.hero_badge || "COIMBATORE'S PREMIER TRAVEL PARTNER"}</span>
           </AnimatedSection>
 
           <AnimatedSection as="h1" anim="fade-up" delay="200" className="hero-title">
-            DISCOVER THE WORLD WITH <span>SPOT TOURS &amp; TRAVELS</span>
+            {heroContent.hero_title || "DISCOVER THE WORLD WITH SPOT TOURS & TRAVELS"}
           </AnimatedSection>
 
           <AnimatedSection as="p" anim="fade-up" delay="300" className="hero-subtitle">
-            Specializing in customized domestic tours, international holidays, honeymoon packages, flight/train ticketing, and premium cab rentals from Kuniyamuthur, Coimbatore.
+            {heroContent.hero_subtitle || "Specializing in customized domestic tours, international holidays, honeymoon packages, flight/train ticketing, and premium cab rentals from Kuniyamuthur, Coimbatore."}
           </AnimatedSection>
 
           <AnimatedSection anim="fade-up" delay="400" className="hero-stats glass-panel">
             <div className="stat">
               <span className="stat-number">
-                <CountUpNumber target={4.7} decimals={1} duration={2000} /> <FaStar className="star-inline" />
+                <CountUpNumber target={parseFloat(heroContent.stat_rating) || 4.7} decimals={1} duration={2000} /> <FaStar className="star-inline" />
               </span>
-              <span className="stat-label">Google Rating (34 Reviews)</span>
+              <span className="stat-label">{heroContent.stat_reviews || "Google Rating (34 Reviews)"}</span>
             </div>
             <div className="stat">
               <span className="stat-number">
-                <CountUpNumber target={100} decimals={0} suffix="+" duration={2000} />
+                <CountUpNumber target={parseInt(heroContent.stat_destinations) || 100} decimals={0} suffix="+" duration={2000} />
               </span>
-              <span className="stat-label">Tour Destinations</span>
+              <span className="stat-label">{heroContent.stat_destinations_label || "Tour Destinations"}</span>
             </div>
             <div className="stat">
               <span className="stat-number">
-                <CountUpNumber target={100} decimals={0} suffix="%" duration={2000} />
+                <CountUpNumber target={parseInt(heroContent.stat_customized) || 100} decimals={0} suffix="%" duration={2000} />
               </span>
-              <span className="stat-label">Customized Itineraries</span>
+              <span className="stat-label">{heroContent.stat_customized_label || "Customized Itineraries"}</span>
             </div>
           </AnimatedSection>
 
           <AnimatedSection anim="fade-up" delay="500" className="hero-cta-group">
             <Link to="/packages" className="btn-primary hero-btn">
-              <FaMapMarkedAlt /> View All Tour Packages
+              <FaMapMarkedAlt /> {heroContent.cta_primary || "View All Tour Packages"}
             </Link>
             <a 
               href={`https://wa.me/${agencyInfo.whatsappRaw}?text=Hi%20Spot%20Tours%20and%20Travels,%20I%20would%20like%20to%20enquire%20about%20tour%20packages`}
@@ -156,7 +162,7 @@ const HomePage = () => {
               rel="noreferrer" 
               className="btn-whatsapp hero-whatsapp-btn"
             >
-              <FaWhatsapp /> WhatsApp Enquire
+              <FaWhatsapp /> {heroContent.cta_secondary || "WhatsApp Enquire"}
             </a>
           </AnimatedSection>
         </div>
@@ -176,7 +182,7 @@ const HomePage = () => {
               </p>
             </div>
             <Link to="/packages" className="btn-secondary view-all-link-btn">
-              Browse All {tourPackages.length} Packages <FaArrowRight />
+              Browse All {tourPackages?.length || 0} Packages <FaArrowRight />
             </Link>
           </div>
 
@@ -192,10 +198,10 @@ const HomePage = () => {
               className="slider-track"
               style={{ transform: `translateX(calc(-${pkgIndex} * (100% + 24px) / ${itemsPerPage}))` }}
             >
-              {tourPackages.map((pkg) => (
-                <div key={pkg.id} className="slider-card-item">
+              {(tourPackages || []).map((pkg) => (
+                <div key={pkg.id || pkg._id} className="slider-card-item">
                   <div className={`package-card ${pkg.popular ? 'featured' : ''}`}>
-                    {pkg.popular && <span className="package-popular-badge"><FaStar className="gold-star-inline" /> Most Popular</span>}
+                    {pkg.popular && <span className="package-popular-badge">Popular</span>}
                     <div className="package-image-wrap">
                       <img src={pkg.image} alt={pkg.title} loading="lazy" />
                       <span className="package-duration-pill">{pkg.duration}</span>
@@ -211,7 +217,7 @@ const HomePage = () => {
                       <p className="package-destination-text">{pkg.destination}</p>
 
                       <ul className="package-highlights-list">
-                        {pkg.highlights.slice(0, 2).map((h, i) => (
+                        {(pkg.highlights || []).slice(0, 2).map((h, i) => (
                           <li key={i}><FaCheck className="check-icon" /> {h}</li>
                         ))}
                       </ul>
@@ -220,7 +226,7 @@ const HomePage = () => {
                         <div className="package-pricing">
                           <span className="price-from">Starting From</span>
                           <div className="price-tag">
-                            ₹{pkg.price.toLocaleString('en-IN')}
+                            ₹{Number(pkg.price || 0).toLocaleString('en-IN')}
                             <span className="price-unit">/person</span>
                           </div>
                         </div>
@@ -272,10 +278,12 @@ const HomePage = () => {
       <section className="why-us-section section-alt">
         <div className="container">
           <AnimatedSection anim="fade-up" className="section-header-left">
-            <div className="section-tag">WHY TRAVEL WITH US</div>
-            <h2 className="section-title section-title-left">THE <span>SPOT TOURS &amp; TRAVELS</span> ADVANTAGE</h2>
+            <div className="section-tag">{whyUsContent.section_tag || "WHY TRAVEL WITH US"}</div>
+            <h2 className="section-title section-title-left">
+              {whyUsContent.section_title || "THE SPOT TOURS & TRAVELS ADVANTAGE"}
+            </h2>
             <p className="section-subtitle">
-              Headquartered in Kuniyamuthur, Coimbatore, we deliver genuine hospitality, transparent pricing, and 100% peace of mind.
+              {whyUsContent.section_subtitle || "Headquartered in Kuniyamuthur, Coimbatore, we deliver genuine hospitality, transparent pricing, and 100% peace of mind."}
             </p>
           </AnimatedSection>
 
@@ -283,39 +291,39 @@ const HomePage = () => {
             <AnimatedSection anim="fade-up" delay="100" className="why-us-card">
               <div className="why-us-card-header">
                 <div className="why-us-icon"><FaShieldAlt /></div>
-                <h3>100% Verified &amp; Safe Stays</h3>
+                <h3>{whyUsContent.card1_title || "100% Verified & Safe Stays"}</h3>
               </div>
-              <p>We handpick only hygienic, top-reviewed 3-star to 5-star hotels and luxury houseboats checked for family and couple safety.</p>
+              <p>{whyUsContent.card1_desc || "We handpick only hygienic, top-reviewed 3-star to 5-star hotels and luxury houseboats checked for family and couple safety."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="fade-up" delay="200" className="why-us-card">
               <div className="why-us-card-header">
                 <div className="why-us-icon"><FaSuitcaseRolling /></div>
-                <h3>Tailor-Made Flexible Plans</h3>
+                <h3>{whyUsContent.card2_title || "Tailor-Made Flexible Plans"}</h3>
               </div>
-              <p>Customise sightseeing spots, vehicle types, stay durations, and meal preferences exactly according to your group's budget.</p>
+              <p>{whyUsContent.card2_desc || "Customise sightseeing spots, vehicle types, stay durations, and meal preferences exactly according to your group's budget."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="fade-up" delay="300" className="why-us-card">
               <div className="why-us-card-header">
                 <div className="why-us-icon"><FaHeadset /></div>
-                <h3>24/7 Dedicated Trip Coordinator</h3>
+                <h3>{whyUsContent.card3_title || "24/7 Dedicated Trip Coordinator"}</h3>
               </div>
-              <p>Our Coimbatore travel specialist is always one call away throughout your journey to ensure seamless travel from day one.</p>
+              <p>{whyUsContent.card3_desc || "Our Coimbatore travel specialist is always one call away throughout your journey to ensure seamless travel from day one."}</p>
             </AnimatedSection>
 
             <AnimatedSection anim="fade-up" delay="400" className="why-us-card">
               <div className="why-us-card-header">
                 <div className="why-us-icon"><FaStar /></div>
-                <h3>4.7★ Top Rated in Coimbatore</h3>
+                <h3>{whyUsContent.card4_title || "4.7★ Top Rated in Coimbatore"}</h3>
               </div>
-              <p>Backed by 34+ verified Google reviews from satisfied families, honeymooners, and corporate clients.</p>
+              <p>{whyUsContent.card4_desc || "Backed by 34+ verified Google reviews from satisfied families, honeymooners, and corporate clients."}</p>
             </AnimatedSection>
           </div>
         </div>
       </section>
 
-      {/* 360 Degree Infinite Orbit Showcase (180° Visible Arc Window) */}
+      {/* 360 Degree Infinite Orbit Showcase */}
       <OrbitShowcase />
 
       {/* Destinations Grid */}
@@ -339,7 +347,7 @@ const HomePage = () => {
           <div className="destinations-grid-modern">
             {featuredDestinations.map((dest, idx) => (
               <AnimatedSection
-                key={dest.id}
+                key={dest.id || dest._id}
                 anim="zoom-in"
                 delay={String((idx % 3) * 100 + 100)}
                 className="destination-modern-card"
@@ -381,7 +389,7 @@ const HomePage = () => {
                 Call {agencyInfo.phone}
               </a>
               <a 
-                href={`https://wa.me/${agencyInfo.whatsappRaw}`} 
+                href={`https://wa.me/${agencyInfo.whatsappRaw}?text=Hi%20Spot%20Tours,%20I%20would%20like%20to%20enquire%20about%20a%20custom%20tour`} 
                 target="_blank" 
                 rel="noreferrer" 
                 className="btn-whatsapp cta-wa-btn"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MdAdd, MdEdit, MdDelete, MdClose, MdPerson, MdRefresh, MdShield } from 'react-icons/md';
 import { api } from '../utils/api.js';
 import AdminImageUpload from '../components/AdminImageUpload.jsx';
+import AdminAlert from '../components/AdminAlert.jsx';
 
 const EMPTY = { name: '', role: '', experience: '', speciality: '', image: '' };
 
@@ -79,7 +80,10 @@ export default function Team() {
         </div>
       </div>
 
-      {success && <div className="adm-alert adm-alert-success">✅ {success}</div>}
+      <AdminAlert 
+        alert={success ? { type: 'success', msg: success } : (error ? { type: 'error', msg: error } : null)} 
+        onClose={() => { setSuccess(''); setError(''); }} 
+      />
 
       {loading ? (
         <div className="adm-loading"><div className="adm-spinner" /> Loading team specialists…</div>
