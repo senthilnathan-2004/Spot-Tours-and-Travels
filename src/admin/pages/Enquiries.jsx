@@ -220,11 +220,11 @@ export default function Enquiries() {
           <div className="adm-modal" onClick={e => e.stopPropagation()}>
             <div className="adm-modal-header">
               <h3 className="adm-modal-title">📩 Client Enquiry</h3>
-              <button className="adm-modal-close" onClick={() => setSelected(null)}><MdClose /></button>
+              <button className="adm-modal-close" onClick={() => setSelected(null)} aria-label="Close modal"><MdClose /></button>
             </div>
             <div className="adm-modal-body">
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
-                <span className={`adm-badge ${STATUS_BADGE[selected.status] || ''}`} style={{ fontSize: '0.82rem', padding: '6px 14px' }}>
+              <div className="adm-modal-ref-bar" style={{ justifyContent: 'flex-end' }}>
+                <span className={`adm-badge ${STATUS_BADGE[selected.status] || ''}`} style={{ fontSize: '0.82rem', padding: '5px 14px' }}>
                   Status: {selected.status}
                 </span>
               </div>
@@ -239,27 +239,30 @@ export default function Enquiries() {
               </div>
 
               {selected.message && (
-                <div style={{ marginTop: 18, padding: '16px 20px', background: '#F8FAFC', borderRadius: 12, border: '1px solid #E2E8F0' }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#475569', marginBottom: 6, textTransform: 'uppercase', fontFamily: 'Oswald, sans-serif' }}>Client Note / Message</div>
-                  <p style={{ fontSize: '0.92rem', color: '#1E293B', lineHeight: 1.6 }}>{selected.message}</p>
+                <div style={{ marginTop: 16, padding: '14px 16px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: 4, textTransform: 'uppercase', fontFamily: 'Oswald, sans-serif' }}>Client Note / Message</div>
+                  <p style={{ fontSize: '0.9rem', color: '#1E293B', lineHeight: 1.6, overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{selected.message}</p>
                 </div>
               )}
 
               {/* Status Updater */}
-              <div style={{ marginTop: 22, padding: '16px 20px', background: '#F8FAFC', borderRadius: 12, border: '1px solid #E2E8F0' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: 'Oswald, sans-serif' }}>
+              <div className="adm-status-box">
+                <div className="adm-status-title">
                   Change Status
                 </div>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {['new', 'read', 'resolved'].map(s => (
+                <div className="adm-status-buttons">
+                  {[
+                    { id: 'new', label: 'New / Unread' },
+                    { id: 'read', label: 'In Review' },
+                    { id: 'resolved', label: 'Resolved' }
+                  ].map(s => (
                     <button
-                      key={s}
-                      onClick={() => updateStatus(selected._id, s)}
-                      disabled={updatingId === selected._id || selected.status === s}
-                      className={`adm-btn adm-btn-sm ${selected.status === s ? 'adm-btn-primary' : 'adm-btn-ghost'}`}
-                      style={{ textTransform: 'capitalize' }}
+                      key={s.id}
+                      onClick={() => updateStatus(selected._id, s.id)}
+                      disabled={updatingId === selected._id || selected.status === s.id}
+                      className={`adm-btn adm-btn-sm ${selected.status === s.id ? 'adm-btn-primary' : 'adm-btn-ghost'}`}
                     >
-                      Mark as {s}
+                      {selected.status === s.id ? `✓ ${s.label}` : s.label}
                     </button>
                   ))}
                 </div>
@@ -267,17 +270,21 @@ export default function Enquiries() {
             </div>
 
             <div className="adm-modal-footer">
-              <a href={`tel:${selected.phone}`} className="adm-btn adm-btn-ghost">
-                <MdPhone /> Call
-              </a>
               <a
                 href={waLink(selected)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="adm-btn"
-                style={{ background: '#25D366', color: '#FFFFFF', textDecoration: 'none' }}
+                className="adm-btn adm-btn-whatsapp"
+                title="Reply on WhatsApp"
               >
-                <FaWhatsapp style={{ fontSize: '1.1rem' }} /> Reply on WhatsApp
+                <FaWhatsapp style={{ fontSize: '1.15rem', flexShrink: 0 }} /> WhatsApp
+              </a>
+              <a 
+                href={`tel:${selected.phone}`} 
+                className="adm-btn adm-btn-ghost"
+                title="Call Lead"
+              >
+                <MdPhone style={{ fontSize: '1.1rem', flexShrink: 0 }} /> Call
               </a>
               <button className="adm-btn adm-btn-ghost" onClick={() => setSelected(null)}>
                 Close

@@ -34,15 +34,30 @@ const ContactPage = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Save enquiry to MongoDB
-    api.createEnquiry(formState).catch(err => console.warn('Enquiry API save failed:', err.message));
-    // Format WhatsApp message to send as fallback
-    const waText = `Hi Spot Tours, I am ${formState.name} (${formState.phone}). I want to enquire about trip to ${formState.destination || 'a vacation'} on ${formState.travelDate || 'flexible dates'}. Notes: ${formState.message}`;
-    window.open(`https://wa.me/${agencyInfo.whatsappRaw}?text=${encodeURIComponent(waText)}`, '_blank');
+    setSubmitting(true);
+    try {
+      // Save enquiry to MongoDB (shows in Admin Panel)
+      await api.createEnquiry(formState);
+      setSubmitted(true);
+      setFormState({
+        name: '',
+        phone: '',
+        email: '',
+        destination: '',
+        travelDate: '',
+        message: ''
+      });
+    } catch (err) {
+      console.warn('Enquiry API save failed:', err.message);
+      // Show submitted banner even if offline
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -196,8 +211,8 @@ const ContactPage = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn-primary form-submit-btn">
-                  <FaPaperPlane /> Send Travel Enquiry
+                <button type="submit" className="btn-primary form-submit-btn" disabled={submitting}>
+                  <FaPaperPlane /> {submitting ? 'Submitting Enquiry...' : 'Send Travel Enquiry'}
                 </button>
               </form>
             </div>

@@ -149,7 +149,7 @@ export default function Dashboard() {
                 <tbody>
                   {recentBookings.map(b => (
                     <tr key={b._id}>
-                      <td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
                         <span className="adm-ref-code">{b.bookingRef}</span>
                       </td>
                       <td>

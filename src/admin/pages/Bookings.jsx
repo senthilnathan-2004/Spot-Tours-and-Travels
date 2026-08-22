@@ -159,7 +159,7 @@ export default function Bookings() {
                 <tbody>
                   {filtered.map(b => (
                     <tr key={b._id}>
-                      <td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
                         <span className="adm-ref-code">{b.bookingRef}</span>
                       </td>
                       <td>
@@ -254,14 +254,14 @@ export default function Bookings() {
           <div className="adm-modal adm-modal-lg" onClick={e => e.stopPropagation()}>
             <div className="adm-modal-header">
               <h3 className="adm-modal-title">📋 Reservation Details</h3>
-              <button className="adm-modal-close" onClick={() => setSelected(null)}><MdClose /></button>
+              <button className="adm-modal-close" onClick={() => setSelected(null)} aria-label="Close modal"><MdClose /></button>
             </div>
             <div className="adm-modal-body">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
-                <span className="adm-ref-code" style={{ fontSize: '0.95rem', padding: '6px 14px' }}>
+              <div className="adm-modal-ref-bar">
+                <span className="adm-ref-code" style={{ fontSize: '0.92rem', padding: '5px 12px' }}>
                   REF: {selected.bookingRef}
                 </span>
-                <span className={`adm-badge ${STATUS_BADGE[selected.status] || ''}`} style={{ fontSize: '0.85rem', padding: '6px 16px' }}>
+                <span className={`adm-badge ${STATUS_BADGE[selected.status] || ''}`} style={{ fontSize: '0.82rem', padding: '5px 14px' }}>
                   Status: {selected.status}
                 </span>
               </div>
@@ -274,7 +274,7 @@ export default function Bookings() {
                 <DetailItem label="Destination" value={selected.destination} />
                 <DetailItem label="Tour Duration" value={selected.duration} />
                 <DetailItem label="Travel Start Date" value={selected.travelDate} />
-                <DetailItem label="Party Size" value={`${selected.adults} Adults, ${selected.children || 0} Children`} />
+                <DetailItem label="Party Size" value={`${selected.adults} Adults${selected.children > 0 ? `, ${selected.children} Children` : ''}`} />
                 <DetailItem label="Vehicle Preference" value={selected.vehicleType || 'Standard AC Sedan'} />
                 <DetailItem label="Hotel Category" value={selected.hotelCategory || '3-Star Deluxe Resort'} />
                 <DetailItem label="Estimated Total" value={`₹${Number(selected.totalAmount || 0).toLocaleString('en-IN')}`} />
@@ -282,27 +282,31 @@ export default function Bookings() {
               </div>
 
               {selected.specialNotes && (
-                <div style={{ marginTop: 16, padding: '14px 18px', background: '#FFFBEB', borderRadius: 10, border: '1px solid #FDE68A' }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#92400E', marginBottom: 4, textTransform: 'uppercase', fontFamily: 'Oswald, sans-serif' }}>Customer Request / Notes</div>
-                  <p style={{ fontSize: '0.9rem', color: '#78350F', lineHeight: 1.5 }}>{selected.specialNotes}</p>
+                <div style={{ marginTop: 16, padding: '14px 16px', background: '#FFFBEB', borderRadius: 10, border: '1px solid #FDE68A' }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#92400E', marginBottom: 4, textTransform: 'uppercase', fontFamily: 'Oswald, sans-serif' }}>Customer Request / Notes</div>
+                  <p style={{ fontSize: '0.88rem', color: '#78350F', lineHeight: 1.5, overflowWrap: 'anywhere', wordBreak: 'break-word' }}>{selected.specialNotes}</p>
                 </div>
               )}
 
               {/* Status Updater */}
-              <div style={{ marginTop: 22, padding: '16px 20px', background: '#F8FAFC', borderRadius: 12, border: '1px solid #E2E8F0' }}>
-                <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.5px', fontFamily: 'Oswald, sans-serif' }}>
+              <div className="adm-status-box">
+                <div className="adm-status-title">
                   Update Booking Status
                 </div>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                  {['pending', 'confirmed', 'completed', 'cancelled'].map(s => (
+                <div className="adm-status-buttons">
+                  {[
+                    { id: 'pending', label: 'Pending' },
+                    { id: 'confirmed', label: 'Confirmed' },
+                    { id: 'completed', label: 'Completed' },
+                    { id: 'cancelled', label: 'Cancelled' }
+                  ].map(s => (
                     <button
-                      key={s}
-                      onClick={() => updateStatus(selected._id, s)}
-                      disabled={updatingId === selected._id || selected.status === s}
-                      className={`adm-btn adm-btn-sm ${selected.status === s ? 'adm-btn-primary' : 'adm-btn-ghost'}`}
-                      style={{ textTransform: 'capitalize' }}
+                      key={s.id}
+                      onClick={() => updateStatus(selected._id, s.id)}
+                      disabled={updatingId === selected._id || selected.status === s.id}
+                      className={`adm-btn adm-btn-sm ${selected.status === s.id ? 'adm-btn-primary' : 'adm-btn-ghost'}`}
                     >
-                      Mark as {s}
+                      {selected.status === s.id ? `✓ ${s.label}` : s.label}
                     </button>
                   ))}
                 </div>
@@ -310,17 +314,21 @@ export default function Bookings() {
             </div>
 
             <div className="adm-modal-footer">
-              <a href={`tel:${selected.phone}`} className="adm-btn adm-btn-ghost">
-                <MdPhone /> Call Customer
-              </a>
               <a
                 href={waLink(selected)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="adm-btn"
-                style={{ background: '#25D366', color: '#FFFFFF', textDecoration: 'none' }}
+                className="adm-btn adm-btn-whatsapp"
+                title="Send WhatsApp confirmation"
               >
-                <FaWhatsapp style={{ fontSize: '1.1rem' }} /> WhatsApp Confirmation
+                <FaWhatsapp style={{ fontSize: '1.15rem', flexShrink: 0 }} /> WhatsApp
+              </a>
+              <a 
+                href={`tel:${selected.phone}`} 
+                className="adm-btn adm-btn-ghost"
+                title="Call Customer"
+              >
+                <MdPhone style={{ fontSize: '1.1rem', flexShrink: 0 }} /> Call
               </a>
               <button className="adm-btn adm-btn-ghost" onClick={() => setSelected(null)}>
                 Close

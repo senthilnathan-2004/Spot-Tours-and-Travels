@@ -794,4 +794,30 @@
     height: 38px;
     padding: 0 8px 0 4px;
   }
+
+  .adm-header-notif-dropdown {
+    position: fixed;
+    top: 68px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: 420px;
+    margin: 0 auto;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22), 0 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+
+  .adm-header-user-dropdown {
+    position: fixed;
+    top: 68px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: 320px;
+    margin: 0 auto;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22), 0 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
 }

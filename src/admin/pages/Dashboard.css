@@ -25,18 +25,24 @@
   padding: 4px 8px;
   border-radius: 6px;
   border: 1px solid rgba(14, 116, 144, 0.2);
+  white-space: nowrap;
+  display: inline-block;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .adm-customer-name {
   font-weight: 700;
   color: var(--adm-text-main);
   font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .adm-customer-sub {
   font-size: 0.78rem;
   color: var(--adm-text-muted);
   margin-top: 1px;
+  white-space: nowrap;
 }
 
 .adm-package-title-cell {

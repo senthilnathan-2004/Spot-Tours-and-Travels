@@ -285,13 +285,96 @@
 }
 
 @media (max-width: 768px) {
+  .confirmation-page {
+    padding: 85px 0 3rem;
+  }
+  .confirmation-card {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
   .conf-details-grid {
     grid-template-columns: 1fr;
+    padding: 16px 14px;
+    gap: 16px;
+    border-radius: 12px;
   }
   .steps-row {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-page {
+    padding: 75px 0 2rem;
   }
   .confirmation-card {
-    padding: 24px;
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+  .confirmation-header {
+    margin-bottom: 1.25rem;
+  }
+  .success-icon-badge {
+    width: 56px;
+    height: 56px;
+    font-size: 1.85rem;
+    margin-bottom: 12px;
+  }
+  .confirmation-header h1 {
+    font-size: 1.55rem;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .conf-sub {
+    font-size: 0.92rem;
+    margin-bottom: 14px;
+  }
+  .booking-ref-badge {
+    padding: 8px 16px;
+    border-radius: 10px;
+  }
+  .booking-ref-badge strong {
+    font-size: 1.35rem;
+  }
+  .conf-details-grid {
+    padding: 14px 10px;
+    gap: 14px;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+  }
+  .conf-section h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .conf-item {
+    padding: 6px 0;
+    gap: 10px;
+    font-size: 0.82rem;
+  }
+  .conf-label {
+    min-width: 90px;
+  }
+  .conf-val {
+    word-break: break-word;
+  }
+  .conf-total-banner {
+    padding: 14px 12px;
+    margin-bottom: 1.25rem;
+    border-radius: 12px;
+  }
+  .conf-final-price {
+    font-size: 1.85rem;
+  }
+  .next-steps-box {
+    margin-bottom: 1.5rem;
+  }
+  .step-col {
+    padding: 12px 10px;
+    border-radius: 10px;
+  }
+  .conf-support-footer {
+    font-size: 0.8rem;
+    gap: 8px;
   }
 }

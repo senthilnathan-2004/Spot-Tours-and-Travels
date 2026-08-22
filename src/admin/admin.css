@@ -342,6 +342,51 @@
   border-bottom: none;
 }
 
+/* ── Ref Codes & Table Elements ──────────────────────────── */
+.adm-ref-code {
+  font-family: 'Outfit', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--adm-secondary);
+  background: var(--adm-secondary-subtle);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(14, 116, 144, 0.2);
+  white-space: nowrap;
+  display: inline-block;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.adm-customer-name {
+  font-weight: 700;
+  color: var(--adm-text-main);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.adm-customer-sub {
+  font-size: 0.78rem;
+  color: var(--adm-text-muted);
+  margin-top: 1px;
+  white-space: nowrap;
+}
+
+.adm-package-title-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.adm-date-cell {
+  font-size: 0.82rem;
+  color: var(--adm-text-muted);
+  white-space: nowrap;
+}
+
 /* ── Status Badges ───────────────────────────────────────── */
 .adm-badge {
   display: inline-flex;
@@ -711,7 +756,7 @@ a.adm-btn.adm-btn-ghost:hover svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   animation: adm-fade-in 0.2s ease;
 }
 
@@ -721,10 +766,12 @@ a.adm-btn.adm-btn-ghost:hover svg {
   box-shadow: var(--adm-shadow-lg);
   width: 100%;
   max-width: 620px;
-  max-height: 90vh;
+  max-height: 88vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
   animation: adm-slide-up 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -738,13 +785,15 @@ a.adm-btn.adm-btn-ghost:hover svg {
 }
 
 .adm-modal-header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 28px;
+  padding: 18px 24px;
   background: linear-gradient(135deg, var(--adm-dark-bg) 0%, var(--adm-dark-surface) 100%);
   color: #FFFFFF;
   border-bottom: 1px solid var(--adm-dark-border);
+  z-index: 2;
 }
 
 .adm-modal-title {
@@ -784,18 +833,52 @@ a.adm-btn.adm-btn-ghost:hover svg {
 }
 
 .adm-modal-body {
-  padding: 28px;
+  padding: 24px;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .adm-modal-footer {
-  padding: 18px 28px;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  padding: 14px 20px;
   border-top: 1px solid var(--adm-card-border);
   display: flex;
-  gap: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
   justify-content: flex-end;
   background: #F8FAFC;
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.adm-modal-footer .adm-btn,
+.adm-modal-footer a.adm-btn,
+.adm-modal-footer button.adm-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 12px !important;
+  font-size: 0.86rem !important;
+  font-weight: 600;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  text-decoration: none;
+}
+
+.adm-modal-footer .adm-btn-whatsapp {
+  flex: 1.3 1 0;
 }
 
 /* ── Toast Notifications ──────────────────────────────────── */
@@ -928,6 +1011,9 @@ a.adm-btn.adm-btn-ghost:hover svg {
   border-radius: var(--adm-radius-sm);
   padding: 14px 16px;
   border: 1px solid var(--adm-card-border);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .adm-detail-label {
@@ -944,6 +1030,72 @@ a.adm-btn.adm-btn-ghost:hover svg {
   font-size: 0.95rem;
   color: var(--adm-text-main);
   font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.adm-modal-ref-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.adm-status-box {
+  margin-top: 20px;
+  padding: 16px 18px;
+  background: #F8FAFC;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.adm-status-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.adm-status-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.adm-status-buttons .adm-btn {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 8px 10px !important;
+  font-size: 0.82rem !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.adm-btn-whatsapp {
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #22c55e !important;
+  text-decoration: none !important;
+}
+
+.adm-btn-whatsapp:hover {
+  background: #20BA5C !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3) !important;
 }
 
 /* ── Empty & Loading ─────────────────────────────────────── */
@@ -1235,15 +1387,101 @@ a.adm-btn.adm-btn-ghost:hover svg {
 
   .adm-modal-body {
     padding: 16px 14px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .adm-modal-footer {
     padding: 12px 14px;
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
+    justify-content: flex-end;
   }
 
   .adm-form-group {
     margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .adm-modal-overlay {
+    padding: 8px;
+  }
+
+  .adm-modal {
+    max-height: 94vh;
+    border-radius: 14px;
+    width: 100%;
+  }
+
+  .adm-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .adm-detail-item {
+    padding: 10px 12px;
+  }
+
+  .adm-detail-label {
+    font-size: 0.68rem;
+    margin-bottom: 2px;
+  }
+
+  .adm-detail-value {
+    font-size: 0.88rem;
+  }
+
+  .adm-status-box {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .adm-status-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .adm-status-buttons .adm-btn {
+    padding: 8px 4px !important;
+    font-size: 0.78rem !important;
+    min-height: 38px !important;
+    height: 38px !important;
+  }
+
+  .adm-modal-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 12px;
+    gap: 6px;
+    background: #F8FAFC;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .adm-modal-footer .adm-btn,
+  .adm-modal-footer a.adm-btn,
+  .adm-modal-footer button.adm-btn {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0 6px !important;
+    font-size: 0.8rem !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    gap: 4px;
+  }
+
+  .adm-modal-footer .adm-btn-whatsapp {
+    flex: 1.25 1 0 !important;
   }
 }
 
@@ -1324,13 +1562,13 @@ a.adm-btn.adm-btn-ghost:hover svg {
   }
 
   .adm-modal-title {
-    font-size: 1rem;
+    font-size: 0.98rem;
   }
 
   .adm-modal-close {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
+    width: 30px;
+    height: 30px;
+    font-size: 1.05rem;
   }
 
   .adm-modal-body {
@@ -1338,14 +1576,33 @@ a.adm-btn.adm-btn-ghost:hover svg {
   }
 
   .adm-modal-footer {
-    padding: 10px 10px;
-    gap: 6px;
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 8px;
+    gap: 5px;
+    background: #F8FAFC;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
   }
 
-  .adm-modal-footer .adm-btn {
-    padding: 8px 12px;
-    font-size: 0.82rem;
-    height: 38px;
+  .adm-modal-footer .adm-btn,
+  .adm-modal-footer a.adm-btn,
+  .adm-modal-footer button.adm-btn {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;
+    font-size: 0.76rem !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    gap: 3px;
+  }
+
+  .adm-modal-footer .adm-btn-whatsapp {
+    flex: 1.2 1 0 !important;
   }
 
   .adm-search-input {

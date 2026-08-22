@@ -14,20 +14,27 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import ContactPage from './pages/ContactPage';
 import BookingConfirmationPage from './pages/BookingConfirmationPage';
 
-// Admin
-import AdminLogin from './admin/AdminLogin';
-import AdminGuard from './admin/AdminGuard';
-import AdminApp from './admin/AdminApp';
-import Dashboard from './admin/pages/Dashboard';
-import Packages from './admin/pages/Packages';
-import Destinations from './admin/pages/Destinations';
-import Blogs from './admin/pages/Blogs';
-import ReviewsManager from './admin/pages/ReviewsManager';
-import ServicesManager from './admin/pages/ServicesManager';
-import Bookings from './admin/pages/Bookings';
-import Enquiries from './admin/pages/Enquiries';
-import Content from './admin/pages/Content';
-import Team from './admin/pages/Team';
+// Admin (Lazily Loaded for Instant Startup & Chunk Optimization)
+const AdminLogin = React.lazy(() => import('./admin/AdminLogin'));
+const AdminGuard = React.lazy(() => import('./admin/AdminGuard'));
+const AdminApp = React.lazy(() => import('./admin/AdminApp'));
+const Dashboard = React.lazy(() => import('./admin/pages/Dashboard'));
+const Packages = React.lazy(() => import('./admin/pages/Packages'));
+const Destinations = React.lazy(() => import('./admin/pages/Destinations'));
+const Blogs = React.lazy(() => import('./admin/pages/Blogs'));
+const ReviewsManager = React.lazy(() => import('./admin/pages/ReviewsManager'));
+const ServicesManager = React.lazy(() => import('./admin/pages/ServicesManager'));
+const Bookings = React.lazy(() => import('./admin/pages/Bookings'));
+const Enquiries = React.lazy(() => import('./admin/pages/Enquiries'));
+const Content = React.lazy(() => import('./admin/pages/Content'));
+const Team = React.lazy(() => import('./admin/pages/Team'));
+
+const AdminFallback = () => (
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: '#64748B', fontWeight: 600, gap: 10 }}>
+    <div style={{ width: 28, height: 28, border: '3px solid #E2E8F0', borderTopColor: '#D83A56', borderRadius: '50%', animation: 'spin 0.6s linear infinite' }}></div>
+    <span>Loading console...</span>
+  </div>
+);
 
 // Scroll to top helper on route change
 function ScrollToTop() {
@@ -68,8 +75,16 @@ function App() {
           <Route path="/booking-confirmation" element={<PublicLayout><BookingConfirmationPage /></PublicLayout>} />
 
           {/* ── Admin Routes ── */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminGuard />}>
+          <Route path="/admin/login" element={
+            <React.Suspense fallback={<AdminFallback />}>
+              <AdminLogin />
+            </React.Suspense>
+          } />
+          <Route path="/admin" element={
+            <React.Suspense fallback={<AdminFallback />}>
+              <AdminGuard />
+            </React.Suspense>
+          }>
             <Route element={<AdminApp />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />

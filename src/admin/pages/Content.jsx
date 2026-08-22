@@ -152,12 +152,18 @@ const TAB_CONFIG = [
 ];
 
 export default function Content() {
-  const [content, setContent] = useState(DEFAULT_SECTIONS);
+  const [content, setContent] = useState(() => {
+    try {
+      const cached = localStorage.getItem('spot_admin_content_cache');
+      if (cached) return JSON.parse(cached);
+    } catch {}
+    return DEFAULT_SECTIONS;
+  });
   const [activeTab, setActiveTab] = useState('agency');
   const [editingKey, setEditingKey] = useState(null);
   const [editVal, setEditVal] = useState('');
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [alert, setAlert] = useState(null);
 
   useEffect(() => {
@@ -165,7 +171,7 @@ export default function Content() {
   }, []);
 
   async function loadContent() {
-    setLoading(true);
+    setSyncing(true);
     try {
       const data = await api.getContent();
       const merged = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
@@ -178,10 +184,13 @@ export default function Content() {
         });
       }
       setContent(merged);
+      try {
+        localStorage.setItem('spot_admin_content_cache', JSON.stringify(merged));
+      } catch {}
     } catch {
-      setContent(DEFAULT_SECTIONS);
+      // keep current cached / default content
     } finally {
-      setLoading(false);
+      setSyncing(false);
     }
   }
 
@@ -194,10 +203,16 @@ export default function Content() {
     setSaving(true);
     try {
       await api.updateContent(section, key, editVal);
-      setContent(c => ({
-        ...c,
-        [section]: { ...(c[section] || {}), [key]: editVal }
-      }));
+      setContent(c => {
+        const next = {
+          ...c,
+          [section]: { ...(c[section] || {}), [key]: editVal }
+        };
+        try {
+          localStorage.setItem('spot_admin_content_cache', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
       setEditingKey(null);
       showAlert('success', `Updated "${key.replace(/_/g, ' ')}" in live database!`);
     } catch (e) {
@@ -217,6 +232,9 @@ export default function Content() {
         value: val
       }));
       await api.updateBulkContent(updates);
+      try {
+        localStorage.setItem('spot_admin_content_cache', JSON.stringify(content));
+      } catch {}
       showAlert('success', `All fields in "${activeTab.replace(/_/g, ' ')}" saved to database!`);
     } catch (e) {
       showAlert('error', 'Batch save failed: ' + e.message);
@@ -281,18 +299,15 @@ export default function Content() {
       </div>
 
       {/* Active Section Editor Card */}
-      {loading ? (
-        <div className="adm-loading"><div className="adm-spinner" /> Loading content…</div>
-      ) : (
-        <div className="adm-card">
-          <div className="adm-card-header">
-            <h2 className="adm-card-title">
-              {TAB_CONFIG.find(t => t.id === activeTab)?.label}
-            </h2>
-            <span className="adm-badge adm-badge-confirmed" style={{ textTransform: 'uppercase' }}>
-              Live Sync Enabled
-            </span>
-          </div>
+      <div className="adm-card">
+        <div className="adm-card-header">
+          <h2 className="adm-card-title">
+            {TAB_CONFIG.find(t => t.id === activeTab)?.label}
+          </h2>
+          <span className={`adm-badge ${syncing ? 'adm-badge-pending' : 'adm-badge-confirmed'}`} style={{ textTransform: 'uppercase' }}>
+            {syncing ? 'Syncing...' : 'Live Sync Active'}
+          </span>
+        </div>
 
           <div className="adm-card-body" style={{ padding: '12px 24px' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -391,7 +406,6 @@ export default function Content() {
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 }
