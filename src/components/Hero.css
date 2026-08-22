@@ -1,6 +1,7 @@
 .hero-section {
   min-height: auto;
   position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   background: #64C5F0 url('../assets/hero-airplane.jpg') right center / cover no-repeat;

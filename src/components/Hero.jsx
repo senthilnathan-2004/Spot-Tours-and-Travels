@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaStar, FaPlane, FaPlaneDeparture, FaMapMarkedAlt, FaWhatsapp } from 'react-icons/fa';
 import './Hero.css';
+
+const CountUpNumber = ({ target, duration = 2000, decimals = 0, suffix = '' }) => {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    let frameId;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setValue(easeOut * target);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(step);
+      } else {
+        setValue(target);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      frameId = requestAnimationFrame(step);
+    }, 250);
+
+    return () => {
+      clearTimeout(timer);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [target, duration]);
+
+  return (
+    <>
+      {decimals > 0 ? value.toFixed(decimals) : Math.floor(value)}
+      {suffix}
+    </>
+  );
+};
 
 const Hero = () => {
   return (
@@ -24,7 +62,9 @@ const Hero = () => {
         <div className="hero-stats">
           <div className="stat">
             <div className="stat-star-group">
-              <span className="stat-number">4.7</span>
+              <span className="stat-number">
+                <CountUpNumber target={4.7} decimals={1} duration={2000} />
+              </span>
               <div className="star-icons">
                 <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
               </div>
@@ -33,12 +73,16 @@ const Hero = () => {
           </div>
 
           <div className="stat">
-            <span className="stat-number">100+</span>
+            <span className="stat-number">
+              <CountUpNumber target={100} decimals={0} suffix="+" duration={2000} />
+            </span>
             <span className="stat-label">Tour Destinations</span>
           </div>
 
           <div className="stat">
-            <span className="stat-number">100%</span>
+            <span className="stat-number">
+              <CountUpNumber target={100} decimals={0} suffix="%" duration={2000} />
+            </span>
             <span className="stat-label">Customized Itineraries</span>
           </div>
         </div>

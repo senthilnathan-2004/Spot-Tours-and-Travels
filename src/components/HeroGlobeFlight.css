@@ -1,0 +1,352 @@
+/* Hero Globe & Flight Animation Canvas */
+.hero-globe-flight-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* SVG Flight Trail Arc */
+.flight-trail-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.flight-arc-path {
+  stroke-dasharray: 4 3;
+  animation: dashAnimation 1.5s linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes dashAnimation {
+  from {
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 3D Glowing Globe Target Node */
+.globe-beacon-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: left 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), top 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 5; /* Globe is in front */
+}
+
+/* Rounder Glow Radar Rings */
+.glow-rounder-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.4), inset 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.ring-1 {
+  width: 68px;
+  height: 68px;
+  animation: radarPulse 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.ring-2 {
+  width: 96px;
+  height: 96px;
+  animation: radarPulse 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.9s infinite;
+}
+
+.ring-3 {
+  width: 124px;
+  height: 124px;
+  animation: radarPulse 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1.8s infinite;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.9;
+    border-color: rgba(34, 197, 94, 0.9);
+  }
+  50% {
+    opacity: 0.6;
+    border-color: rgba(56, 189, 248, 0.8);
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+    border-color: rgba(34, 197, 94, 0);
+  }
+}
+
+/* Realistic 3D Blue Ocean & Green Continent Earth Globe */
+.globe-sphere-wrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 32%, #0284c7 0%, #0369a1 45%, #0c4a6e 85%, #082f49 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.75), 0 0 45px rgba(34, 197, 94, 0.4), inset -2px -2px 8px rgba(0, 0, 0, 0.65), inset 2px 2px 8px rgba(255, 255, 255, 0.6);
+  border: 1.5px solid rgba(186, 230, 253, 0.9);
+  animation: floatGlobe 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatGlobe {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-6px) rotate(8deg);
+  }
+}
+
+.globe-icon-spin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotateEarth 14s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes rotateEarth {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Realistic Emerald Green Landmasses */
+.globe-3d-icon {
+  font-size: 1.85rem;
+  color: #22c55e;
+  filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.95)) drop-shadow(0 0 8px rgba(22, 163, 74, 0.8));
+}
+
+.globe-radial-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 75%);
+  pointer-events: none;
+}
+
+/* Destination Floating Badge */
+.dest-floating-badge {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  transform: translateY(0);
+  transition: all 0.35s ease;
+}
+
+.dest-pin-icon {
+  color: #ef4444;
+  font-size: 0.75rem;
+  animation: bouncePin 1.5s infinite;
+}
+
+@keyframes bouncePin {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.dest-city-text {
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.badge-arrived {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(15, 23, 42, 0.95));
+  border-color: #fbbf24;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+}
+
+/* Landing Pulse State on Globe */
+.globe-landing-pulse .globe-sphere-wrap {
+  animation: pulseScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2;
+  box-shadow: 0 0 35px rgba(251, 191, 36, 0.9), 0 0 65px rgba(236, 72, 153, 0.6);
+}
+
+@keyframes pulseScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Jet Flight Airplane Node */
+.jet-flight-node {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  transform-origin: center center;
+  transition: transform 0.5s ease;
+}
+
+.plane-in-flight {
+  transition: left 3.4s cubic-bezier(0.45, 0.05, 0.55, 0.95), top 3.4s cubic-bezier(0.45, 0.05, 0.55, 0.95), transform 0.4s ease;
+}
+
+.plane-docked {
+  transition: transform 0.3s ease;
+}
+
+.jet-plane-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 20px rgba(56, 189, 248, 0.9));
+}
+
+.jet-svg-icon {
+  font-size: 1.9rem;
+  color: #ffffff;
+  transform: rotate(0deg);
+}
+
+/* Jet Exhaust & Trail Particles */
+.jet-thruster-exhaust {
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(236, 72, 153, 0.9), rgba(251, 191, 36, 0.9), transparent);
+  filter: blur(1.5px);
+  animation: jetBurn 0.25s infinite alternate;
+}
+
+@keyframes jetBurn {
+  0% {
+    width: 14px;
+    opacity: 0.8;
+  }
+  100% {
+    width: 22px;
+    opacity: 1;
+  }
+}
+
+.jet-trail-particles {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+}
+
+.jet-trail-particles .particle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: particleFade 0.8s infinite;
+}
+
+.particle.p1 { animation-delay: 0s; }
+.particle.p2 { animation-delay: 0.25s; }
+.particle.p3 { animation-delay: 0.5s; }
+
+@keyframes particleFade {
+  0% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.2) translateX(-10px);
+  }
+}
+
+/* Mobile & Tablet Responsive Adjustments */
+@media (max-width: 1024px) {
+  .globe-sphere-wrap {
+    width: 42px;
+    height: 42px;
+  }
+
+  .globe-3d-icon {
+    font-size: 1.55rem;
+  }
+
+  .jet-svg-icon {
+    font-size: 1.65rem;
+  }
+
+  .ring-1 { width: 56px; height: 56px; }
+  .ring-2 { width: 80px; height: 80px; }
+  .ring-3 { width: 104px; height: 104px; }
+}
+
+@media (max-width: 600px) {
+  .globe-sphere-wrap {
+    width: 36px;
+    height: 36px;
+  }
+
+  .globe-3d-icon {
+    font-size: 1.35rem;
+  }
+
+  .jet-svg-icon {
+    font-size: 1.45rem;
+  }
+
+  .dest-floating-badge {
+    padding: 3px 8px;
+    margin-top: 6px;
+  }
+
+  .dest-city-text {
+    font-size: 0.65rem;
+  }
+
+  .ring-1 { width: 48px; height: 48px; }
+  .ring-2 { width: 68px; height: 68px; }
+  .ring-3 { width: 88px; height: 88px; }
+}

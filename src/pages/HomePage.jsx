@@ -20,9 +20,48 @@ import MapSection from '../components/MapSection';
 import OrbitShowcase from '../components/OrbitShowcase';
 import WaveGalleryScroll from '../components/WaveGalleryScroll';
 import AnimatedSection from '../components/AnimatedSection';
+import HeroGlobeFlight from '../components/HeroGlobeFlight';
 import '../components/Hero.css';
 import './HomePage.css';
 
+const CountUpNumber = ({ target, duration = 2000, decimals = 0, suffix = '' }) => {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    let frameId;
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      // Easing function (ease-out cubic)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      setValue(easeOut * target);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(step);
+      } else {
+        setValue(target);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      frameId = requestAnimationFrame(step);
+    }, 250);
+
+    return () => {
+      clearTimeout(timer);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [target, duration]);
+
+  return (
+    <>
+      {decimals > 0 ? value.toFixed(decimals) : Math.floor(value)}
+      {suffix}
+    </>
+  );
+};
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -71,6 +110,7 @@ const HomePage = () => {
     <div className="home-page">
       {/* Hero Section */}
       <section id="hero" className="hero-section">
+        <HeroGlobeFlight />
         <div className="hero-overlay"></div>
         <div className="container hero-content">
           <AnimatedSection anim="fade-down" delay="100" className="hero-badge">
@@ -87,15 +127,21 @@ const HomePage = () => {
 
           <AnimatedSection anim="fade-up" delay="400" className="hero-stats glass-panel">
             <div className="stat">
-              <span className="stat-number">4.7 <FaStar className="star-inline" /></span>
+              <span className="stat-number">
+                <CountUpNumber target={4.7} decimals={1} duration={2000} /> <FaStar className="star-inline" />
+              </span>
               <span className="stat-label">Google Rating (34 Reviews)</span>
             </div>
             <div className="stat">
-              <span className="stat-number">100+</span>
+              <span className="stat-number">
+                <CountUpNumber target={100} decimals={0} suffix="+" duration={2000} />
+              </span>
               <span className="stat-label">Tour Destinations</span>
             </div>
             <div className="stat">
-              <span className="stat-number">100%</span>
+              <span className="stat-number">
+                <CountUpNumber target={100} decimals={0} suffix="%" duration={2000} />
+              </span>
               <span className="stat-label">Customized Itineraries</span>
             </div>
           </AnimatedSection>
