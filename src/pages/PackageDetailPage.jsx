@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { api } from '../admin/utils/api.js';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   FaMapMarkerAlt, 
@@ -60,7 +61,7 @@ const PackageDetailPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleBookingSubmit = (e) => {
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
     const bookingRef = 'SPOT-' + Math.floor(100000 + Math.random() * 900000);
     const bookingData = {
@@ -76,6 +77,9 @@ const PackageDetailPage = () => {
 
     // Store in localStorage for confirmation page
     localStorage.setItem('latestBooking', JSON.stringify(bookingData));
+
+    // Save to MongoDB & trigger email notification (fire-and-forget — never block booking flow)
+    api.createBooking(bookingData).catch(err => console.warn('Booking API save failed:', err.message));
 
     navigate('/booking-confirmation', { state: bookingData });
   };

@@ -1,0 +1,199 @@
+/* ============================================================
+   SPOT TOURS & TRAVELS — DASHBOARD STYLES
+   ============================================================ */
+
+.adm-dashboard-view {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Dual Grid ───────────────────────────────────────────── */
+.adm-dashboard-dual-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+}
+
+/* ── Table Cell Helpers ──────────────────────────────────── */
+.adm-ref-code {
+  font-family: 'Outfit', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--adm-secondary);
+  background: var(--adm-secondary-subtle);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(14, 116, 144, 0.2);
+}
+
+.adm-customer-name {
+  font-weight: 700;
+  color: var(--adm-text-main);
+  font-size: 0.9rem;
+}
+
+.adm-customer-sub {
+  font-size: 0.78rem;
+  color: var(--adm-text-muted);
+  margin-top: 1px;
+}
+
+.adm-package-title-cell {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.adm-date-cell {
+  font-size: 0.82rem;
+  color: var(--adm-text-muted);
+  white-space: nowrap;
+}
+
+/* ── Enquiries Feed ──────────────────────────────────────── */
+.adm-enquiries-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-enquiry-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #F1F5F9;
+  transition: background 0.18s ease;
+}
+
+.adm-enquiry-card:last-child {
+  border-bottom: none;
+}
+
+.adm-enquiry-card:hover {
+  background: #F8FAFC;
+}
+
+.adm-enquiry-card.is-new {
+  background: rgba(216, 58, 86, 0.03);
+}
+
+.adm-enquiry-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--adm-primary) 0%, var(--adm-secondary) 100%);
+  color: #FFFFFF;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-enquiry-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.adm-enquiry-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+
+.adm-enquiry-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--adm-text-main);
+}
+
+.adm-enquiry-dest {
+  font-size: 0.78rem;
+  color: var(--adm-text-muted);
+  font-weight: 500;
+}
+
+.adm-enquiry-snippet {
+  font-size: 0.82rem;
+  color: #475569;
+  font-style: italic;
+  margin-top: 6px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Quick Shortcuts ─────────────────────────────────────── */
+.adm-shortcuts-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.adm-shortcut-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #F8FAFC;
+  border: 1px solid var(--adm-card-border);
+  text-decoration: none;
+  transition: var(--adm-transition);
+}
+
+.adm-shortcut-btn:hover {
+  background: #FFFFFF;
+  border-color: var(--adm-card-hover-border);
+  box-shadow: var(--adm-shadow-md);
+  transform: translateY(-2px);
+}
+
+.adm-shortcut-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.adm-shortcut-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-shortcut-text strong {
+  font-size: 0.92rem;
+  color: var(--adm-text-main);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.4px;
+}
+
+.adm-shortcut-text span {
+  font-size: 0.78rem;
+  color: var(--adm-text-muted);
+  margin-top: 2px;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .adm-dashboard-dual-grid {
+    grid-template-columns: 1fr;
+  }
+  .adm-shortcuts-wrap {
+    grid-template-columns: 1fr;
+  }
+}

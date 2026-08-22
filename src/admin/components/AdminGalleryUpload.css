@@ -1,0 +1,143 @@
+/* ============================================================
+   SPOT TOURS & TRAVELS — ADMIN GALLERY UPLOADER STYLES
+   ============================================================ */
+
+.adm-gallery-upload-root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+  padding: 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+}
+
+.adm-gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adm-gallery-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.adm-gallery-label-icon {
+  color: #D83A56;
+  font-size: 1.15rem;
+}
+
+.adm-gallery-btn-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: #D83A56;
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(216, 58, 86, 0.3);
+  transition: all 180ms ease;
+}
+
+.adm-gallery-btn-upload:hover:not(:disabled) {
+  background: #C02644;
+  transform: translateY(-1px);
+}
+
+.adm-gallery-btn-upload:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.adm-gallery-url-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.adm-gallery-url-input {
+  flex: 1;
+  height: 38px;
+  font-size: 0.85rem;
+  background: #FFFFFF;
+}
+
+.adm-gallery-add-url-btn {
+  height: 38px;
+  padding: 0 14px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  background: #FFFFFF !important;
+}
+
+.adm-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.adm-gallery-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid #CBD5E1;
+  background: #0F172A;
+}
+
+.adm-gallery-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.adm-gallery-item-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.95);
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 180ms ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.adm-gallery-item-remove:hover {
+  background: #DC2626;
+  transform: scale(1.1);
+}
+
+.adm-gallery-empty {
+  padding: 14px 10px;
+  text-align: center;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  background: #FFFFFF;
+  border: 1px dashed #CBD5E1;
+  border-radius: 8px;
+}

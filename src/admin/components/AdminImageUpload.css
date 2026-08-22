@@ -1,0 +1,262 @@
+/* ============================================================
+   SPOT TOURS & TRAVELS — ADMIN IMAGE UPLOADER STYLES
+   ============================================================ */
+
+.adm-img-upload-root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.adm-img-upload-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adm-img-upload-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #1E293B;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.adm-img-label-icon {
+  color: #D83A56;
+  font-size: 1.1rem;
+}
+
+/* ── Mode Toggle Pills ── */
+.adm-img-mode-pills {
+  display: inline-flex;
+  align-items: center;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.adm-img-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  background: transparent;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 180ms ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.adm-img-mode-btn.is-active {
+  background: #FFFFFF;
+  color: #D83A56;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.adm-img-mode-btn:hover:not(.is-active) {
+  color: #0F172A;
+}
+
+/* ── Dropzone ── */
+.adm-img-dropzone {
+  border: 2px dashed #CBD5E1;
+  border-radius: 12px;
+  background: #F8FAFC;
+  padding: 18px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adm-img-dropzone:hover {
+  border-color: #D83A56;
+  background: #FFF5F7;
+}
+
+.adm-img-dropzone.is-dragging {
+  border-color: #D83A56;
+  background: #FFE4E8;
+  transform: scale(1.01);
+}
+
+.adm-img-dropzone.is-processing {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.adm-img-dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.adm-img-dropzone-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #D83A56;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.adm-img-dropzone-text strong {
+  display: block;
+  font-size: 0.88rem;
+  color: #1E293B;
+  font-weight: 600;
+}
+
+.adm-img-dropzone-text span {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.adm-img-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid #E2E8F0;
+  border-top-color: #D83A56;
+  border-radius: 50%;
+  animation: adm-img-spin 0.7s linear infinite;
+}
+
+@keyframes adm-img-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── URL Input ── */
+.adm-img-url-wrap {
+  width: 100%;
+}
+
+.adm-img-url-input {
+  width: 100%;
+  height: 42px;
+  font-size: 0.88rem;
+}
+
+.adm-img-error-msg {
+  font-size: 0.8rem;
+  color: #EF4444;
+  font-weight: 500;
+  background: #FEF2F2;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #FECACA;
+}
+
+/* ── Image Preview Card ── */
+.adm-img-preview-card {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #E2E8F0;
+  background: #0B0F19;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.adm-img-preview-tag {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.adm-img-preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.85) 0%, transparent 60%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 12px 14px;
+  opacity: 0.92;
+  transition: opacity 180ms ease;
+}
+
+.adm-img-preview-card:hover .adm-img-preview-overlay {
+  opacity: 1;
+}
+
+.adm-img-badge-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.adm-img-preview-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.adm-img-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.adm-img-action-remove {
+  background: rgba(239, 68, 68, 0.9);
+  color: #FFFFFF;
+}
+
+.adm-img-action-remove:hover {
+  background: #DC2626;
+}
+
+.adm-img-action-replace {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0F172A;
+}
+
+.adm-img-action-replace:hover {
+  background: #FFFFFF;
+}
+
+.adm-img-help-text {
+  font-size: 0.75rem;
+  color: #64748B;
+  margin-top: 2px;
+}

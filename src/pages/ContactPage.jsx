@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { api } from '../admin/utils/api.js';
 import { 
   FaPhoneAlt, 
   FaWhatsapp, 
@@ -32,9 +33,11 @@ const ContactPage = () => {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
+    // Save enquiry to MongoDB & trigger email notification (fire-and-forget)
+    api.createEnquiry(formState).catch(err => console.warn('Enquiry API save failed:', err.message));
     // Format WhatsApp message to send as fallback
     const waText = `Hi Spot Tours, I am ${formState.name} (${formState.phone}). I want to enquire about trip to ${formState.destination || 'a vacation'} on ${formState.travelDate || 'flexible dates'}. Notes: ${formState.message}`;
     window.open(`https://wa.me/${agencyInfo.whatsappRaw}?text=${encodeURIComponent(waText)}`, '_blank');
