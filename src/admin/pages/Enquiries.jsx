@@ -29,6 +29,7 @@ export default function Enquiries() {
   const [updatingId, setUpdatingId] = useState(null);
   const [search, setSearch] = useState('');
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -38,8 +39,11 @@ export default function Enquiries() {
       const data = await api.getEnquiries(params);
       setEnquiries(data.enquiries || []);
       setTotal(data.total || 0);
-    } catch {}
-    finally { setLoading(false); }
+    } catch (err) {
+      setError(err.message || 'Failed to load enquiries');
+    } finally {
+      setLoading(false);
+    }
   }, [filter]);
 
   useEffect(() => { load(); }, [load]);
@@ -61,8 +65,11 @@ export default function Enquiries() {
       setTimeout(() => setSuccess(''), 3000);
       if (selected?._id === id) setSelected(s => ({ ...s, status }));
       load();
-    } catch {}
-    finally { setUpdatingId(null); }
+    } catch (err) {
+      setError(err.message || 'Failed to update enquiry');
+    } finally {
+      setUpdatingId(null);
+    }
   }
 
   function openView(e) {

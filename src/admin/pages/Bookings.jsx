@@ -33,6 +33,7 @@ export default function Bookings() {
   const [updatingId, setUpdatingId] = useState(null);
   const [search, setSearch] = useState('');
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -43,8 +44,11 @@ export default function Bookings() {
       setBookings(data.bookings || []);
       setTotal(data.total || 0);
       setPages(data.pages || 1);
-    } catch {}
-    finally { setLoading(false); }
+    } catch (err) {
+      setError(err.message || 'Failed to load bookings');
+    } finally {
+      setLoading(false);
+    }
   }, [filter, page]);
 
   useEffect(() => { load(); }, [load]);
@@ -67,8 +71,11 @@ export default function Bookings() {
       setTimeout(() => setSuccess(''), 3500);
       if (selected?._id === id) setSelected(s => ({ ...s, status }));
       load();
-    } catch {}
-    finally { setUpdatingId(null); }
+    } catch (err) {
+      setError(err.message || 'Failed to update booking');
+    } finally {
+      setUpdatingId(null);
+    }
   }
 
   const waLink = b => {
