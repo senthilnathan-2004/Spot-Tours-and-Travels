@@ -1,13 +1,13 @@
 .hero-section {
-  min-height: auto;
+  min-height: 90vh;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   background: #0f172a url('../assets/hero-bg.jpg') center center / cover no-repeat;
   margin-top: 68px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 .hero-overlay {
@@ -185,8 +185,7 @@
 @media (min-width: 601px) and (max-width: 1024px) {
   .hero-section {
     min-height: auto;
-    background-position: center center;
-    background-size: cover;
+    background: #0f172a url('../assets/hero-bg-mobile.jpg') center top / cover no-repeat;
     display: flex;
     align-items: center;
     padding-top: 36px;
@@ -247,8 +246,7 @@
     min-height: auto;
     padding-top: 24px;
     padding-bottom: 28px;
-    background-position: center center;
-    background-size: cover;
+    background: #0f172a url('../assets/hero-bg-mobile.jpg') center top / cover no-repeat;
     display: flex;
     align-items: center;
   }
