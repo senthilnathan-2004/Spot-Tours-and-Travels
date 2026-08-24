@@ -16,6 +16,7 @@ import {
 import { FaWhatsapp } from 'react-icons/fa';
 import { api } from '../utils/api.js';
 import AdminAlert from '../components/AdminAlert.jsx';
+import ConfirmModal from '../components/ConfirmModal.jsx';
 
 const STATUS_BADGE = {
   pending: 'adm-badge-pending',
@@ -118,6 +119,7 @@ export default function Bookings() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -207,35 +209,50 @@ export default function Bookings() {
     }
   }
 
-  async function handleBulkDelete() {
+  function handleBulkDelete() {
     if (selectedIds.length === 0) return;
-    if (!window.confirm(`Are you sure you want to permanently delete ${selectedIds.length} selected bookings?`)) return;
-    setLoading(true);
-    try {
-      await api.bulkDeleteBookings(selectedIds);
-      setSuccess(`Deleted ${selectedIds.length} bookings successfully.`);
-      setTimeout(() => setSuccess(''), 3500);
-      setSelectedIds([]);
-      load();
-    } catch (err) {
-      setError(err.message || 'Failed to delete bookings');
-    } finally {
-      setLoading(false);
-    }
+    setDeleteModal({
+      isOpen: true,
+      title: `Delete ${selectedIds.length} Bookings?`,
+      message: `Are you sure you want to permanently delete ${selectedIds.length} selected bookings? This action cannot be undone.`,
+      onConfirm: async () => {
+        setDeleteModal(prev => ({ ...prev, loading: true }));
+        try {
+          await api.bulkDeleteBookings(selectedIds);
+          setSuccess(`Deleted ${selectedIds.length} bookings successfully.`);
+          setTimeout(() => setSuccess(''), 3500);
+          setSelectedIds([]);
+          load();
+        } catch (err) {
+          setError(err.message || 'Failed to delete bookings');
+        } finally {
+          setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
+        }
+      }
+    });
   }
 
-  async function handleDeleteSingle(id, bookingRef) {
-    if (!window.confirm(`Delete booking ${bookingRef}? This action cannot be undone.`)) return;
-    try {
-      await api.deleteBooking(id);
-      setSuccess('Booking deleted successfully.');
-      setTimeout(() => setSuccess(''), 3000);
-      if (selected?._id === id) setSelected(null);
-      setSelectedIds(prev => prev.filter(x => x !== id));
-      load();
-    } catch (err) {
-      setError(err.message || 'Failed to delete booking');
-    }
+  function handleDeleteSingle(id, bookingRef) {
+    setDeleteModal({
+      isOpen: true,
+      title: `Delete Booking ${bookingRef}?`,
+      message: `Are you sure you want to delete booking ${bookingRef}? This action cannot be undone.`,
+      onConfirm: async () => {
+        setDeleteModal(prev => ({ ...prev, loading: true }));
+        try {
+          await api.deleteBooking(id);
+          setSuccess('Booking deleted successfully.');
+          setTimeout(() => setSuccess(''), 3000);
+          if (selected?._id === id) setSelected(null);
+          setSelectedIds(prev => prev.filter(x => x !== id));
+          load();
+        } catch (err) {
+          setError(err.message || 'Failed to delete booking');
+        } finally {
+          setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
+        }
+      }
+    });
   }
 
   const waLink = b => {
@@ -275,6 +292,15 @@ export default function Bookings() {
       <AdminAlert 
         alert={success ? { type: 'success', msg: success } : (error ? { type: 'error', msg: error } : null)} 
         onClose={() => { setSuccess(''); setError(''); }} 
+      />
+
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        title={deleteModal.title}
+        message={deleteModal.message}
+        onConfirm={deleteModal.onConfirm}
+        onCancel={() => setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false })}
+        loading={deleteModal.loading}
       />
 
       {/* Filter Tabs & Search Bar */}

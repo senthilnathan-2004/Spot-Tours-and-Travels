@@ -15,6 +15,7 @@ import {
 import { FaWhatsapp } from 'react-icons/fa';
 import { api } from '../utils/api.js';
 import AdminAlert from '../components/AdminAlert.jsx';
+import ConfirmModal from '../components/ConfirmModal.jsx';
 
 const STATUS_BADGE = {
   new: 'adm-badge-new',
@@ -97,6 +98,7 @@ export default function Enquiries() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -181,35 +183,50 @@ export default function Enquiries() {
     }
   }
 
-  async function handleBulkDelete() {
+  function handleBulkDelete() {
     if (selectedIds.length === 0) return;
-    if (!window.confirm(`Are you sure you want to permanently delete ${selectedIds.length} selected enquiries?`)) return;
-    setLoading(true);
-    try {
-      await api.bulkDeleteEnquiries(selectedIds);
-      setSuccess(`Deleted ${selectedIds.length} enquiries successfully.`);
-      setTimeout(() => setSuccess(''), 3500);
-      setSelectedIds([]);
-      load();
-    } catch (err) {
-      setError(err.message || 'Failed to delete enquiries');
-    } finally {
-      setLoading(false);
-    }
+    setDeleteModal({
+      isOpen: true,
+      title: `Delete ${selectedIds.length} Enquiries?`,
+      message: `Are you sure you want to permanently delete ${selectedIds.length} selected enquiries? This action cannot be undone.`,
+      onConfirm: async () => {
+        setDeleteModal(prev => ({ ...prev, loading: true }));
+        try {
+          await api.bulkDeleteEnquiries(selectedIds);
+          setSuccess(`Deleted ${selectedIds.length} enquiries successfully.`);
+          setTimeout(() => setSuccess(''), 3500);
+          setSelectedIds([]);
+          load();
+        } catch (err) {
+          setError(err.message || 'Failed to delete enquiries');
+        } finally {
+          setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
+        }
+      }
+    });
   }
 
-  async function handleDeleteSingle(id, name) {
-    if (!window.confirm(`Delete enquiry from ${name || 'customer'}? This action cannot be undone.`)) return;
-    try {
-      await api.deleteEnquiry(id);
-      setSuccess('Enquiry deleted successfully.');
-      setTimeout(() => setSuccess(''), 3000);
-      if (selected?._id === id) setSelected(null);
-      setSelectedIds(prev => prev.filter(x => x !== id));
-      load();
-    } catch (err) {
-      setError(err.message || 'Failed to delete enquiry');
-    }
+  function handleDeleteSingle(id, name) {
+    setDeleteModal({
+      isOpen: true,
+      title: `Delete enquiry from ${name || 'customer'}?`,
+      message: `Are you sure you want to delete the enquiry from ${name || 'customer'}? This action cannot be undone.`,
+      onConfirm: async () => {
+        setDeleteModal(prev => ({ ...prev, loading: true }));
+        try {
+          await api.deleteEnquiry(id);
+          setSuccess('Enquiry deleted successfully.');
+          setTimeout(() => setSuccess(''), 3000);
+          if (selected?._id === id) setSelected(null);
+          setSelectedIds(prev => prev.filter(x => x !== id));
+          load();
+        } catch (err) {
+          setError(err.message || 'Failed to delete enquiry');
+        } finally {
+          setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false });
+        }
+      }
+    });
   }
 
   function openView(e) {
@@ -254,6 +271,15 @@ export default function Enquiries() {
       <AdminAlert 
         alert={success ? { type: 'success', msg: success } : (error ? { type: 'error', msg: error } : null)} 
         onClose={() => { setSuccess(''); setError(''); }} 
+      />
+
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        title={deleteModal.title}
+        message={deleteModal.message}
+        onConfirm={deleteModal.onConfirm}
+        onCancel={() => setDeleteModal({ isOpen: false, title: '', message: '', onConfirm: null, loading: false })}
+        loading={deleteModal.loading}
       />
 
       {/* Filter Tabs & Search */}
