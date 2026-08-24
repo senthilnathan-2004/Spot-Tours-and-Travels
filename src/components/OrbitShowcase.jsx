@@ -125,7 +125,16 @@ const OrbitShowcase = () => {
             <FaCompass className="orbit-tag-icon" /> {sc.orbit_tag || "360° IMMERSIVE EXPLORER"}
           </div>
           <h2 className="section-title section-title-left">
-            {sc.orbit_title ? sc.orbit_title : <>DISCOVER THE WORLD IN <span>360° ORBIT</span></>}
+            {sc.orbit_title ? (
+              (() => {
+                const words = sc.orbit_title.trim().split(' ');
+                if (words.length <= 1) return sc.orbit_title;
+                const splitIdx = Math.ceil(words.length / 2);
+                return <>{words.slice(0, splitIdx).join(' ')} <span>{words.slice(splitIdx).join(' ')}</span></>;
+              })()
+            ) : (
+              <>DISCOVER THE WORLD IN <span>360° ORBIT</span></>
+            )}
           </h2>
           <p className="section-subtitle">
             {sc.orbit_subtitle || "Glide through iconic global wonders. Hover over any destination card to pause the orbit and explore trip details."}

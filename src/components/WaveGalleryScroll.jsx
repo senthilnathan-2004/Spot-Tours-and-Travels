@@ -139,7 +139,16 @@ const WaveGalleryScroll = () => {
             <FaCamera className="wave-tag-icon" /> {sc.gallery_tag || "3D PERSPECTIVE GALLERY"}
           </div>
           <h2 className="section-title section-title-left">
-            {sc.gallery_title ? sc.gallery_title : <>CAPTURING REAL <span>TRAVEL EXPERIENCES</span></>}
+            {sc.gallery_title ? (
+              (() => {
+                const words = sc.gallery_title.trim().split(' ');
+                if (words.length <= 1) return sc.gallery_title;
+                const splitIdx = Math.ceil(words.length / 2);
+                return <>{words.slice(0, splitIdx).join(' ')} <span>{words.slice(splitIdx).join(' ')}</span></>;
+              })()
+            ) : (
+              <>CAPTURING REAL <span>TRAVEL EXPERIENCES</span></>
+            )}
           </h2>
           <p className="section-subtitle">
             {sc.gallery_subtitle || "Immerse yourself in dynamic 3D moments captured across our signature tours. Click or swipe any card to focus."}

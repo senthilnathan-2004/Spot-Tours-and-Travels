@@ -280,7 +280,16 @@ const HomePage = () => {
           <AnimatedSection anim="fade-up" className="section-header-left">
             <div className="section-tag">{whyUsContent.section_tag || "WHY TRAVEL WITH US"}</div>
             <h2 className="section-title section-title-left">
-              {whyUsContent.section_title || "THE SPOT TOURS & TRAVELS ADVANTAGE"}
+              {whyUsContent.section_title ? (
+                (() => {
+                  const words = whyUsContent.section_title.trim().split(' ');
+                  if (words.length <= 1) return whyUsContent.section_title;
+                  const splitIdx = Math.ceil(words.length / 2);
+                  return <>{words.slice(0, splitIdx).join(' ')} <span>{words.slice(splitIdx).join(' ')}</span></>;
+                })()
+              ) : (
+                <>THE SPOT TOURS <span>&amp; TRAVELS ADVANTAGE</span></>
+              )}
             </h2>
             <p className="section-subtitle">
               {whyUsContent.section_subtitle || "Headquartered in Kuniyamuthur, Coimbatore, we deliver genuine hospitality, transparent pricing, and 100% peace of mind."}
