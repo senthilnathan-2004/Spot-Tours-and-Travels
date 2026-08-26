@@ -1,4 +1,4 @@
-# ✈️ Spot Tours & Travels — Modern Travel Agency Web Application
+# Spot Tours & Travels — Modern Travel Agency Web Application
 
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.2.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
@@ -10,40 +10,40 @@ A high-performance, modern, and fully responsive web application built for **Spo
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-### 🏖️ Curated Tour Packages Catalog (`/packages`, `/package/:id`)
+### Curated Tour Packages Catalog (`/packages`, `/package/:id`)
 - **Multi-Faceted Dynamic Filters**: Filter tour packages by keyword search, geographic region (*South India, North India, International, Spiritual*), trip duration, travel theme, and price brackets.
 - **Detailed Package Itinerary**: Day-by-day sightseeing breakdown, inclusions & exclusions list, hotel details, photo galleries, and pricing per person.
 - **Direct Booking & WhatsApp Enquiries**: One-click booking submission connected directly with WhatsApp fallback messaging and dedicated booking confirmation pages.
 
-### 🗺️ Interactive Destination Explorer (`/destinations`)
+### Interactive Destination Explorer (`/destinations`)
 - **Category Filter Tabs**: Explore destinations across *Hill Stations, Beaches, Heritage, International, and Honeymoon* getaways.
 - **Quick Travel Insights**: Immediate display of best travel months, ideal trip duration, and starting price estimates.
 - **Interactive Destination Modal**: View comprehensive itineraries, must-visit spots, and local travel advice without navigating away.
 
-### ⭐ Traveler Reviews & Rating Hub (`/reviews`)
+### Traveler Reviews & Rating Hub (`/reviews`)
 - **Verified Reviews & Star Rating**: Highlighted Google 4.7★ score with verified traveler feedback.
 - **Category-wise Filter**: Filter reviews by family trips, honeymoons, pilgrimage, and group vacations.
 - **Interactive "Share Your Experience" Form**: Built-in full-width form for travelers to publish instant feedback.
 
-### 🧭 About Us & Travel Specialists (`/about`)
+### About Us & Travel Specialists (`/about`)
 - **Company Story & Credentials**: Highlight safety records, commercial transport permits, and transparent pricing.
 - **Meet Our Tour Specialists**: Meet the Coimbatore-based itinerary planners and booking managers.
 
-### 📍 Office Details & Contact (`/contact`)
+### Office Details & Contact (`/contact`)
 - **Interactive Office Info**: Office address near SBI Bank, Palakkad Main Road, Kuniyamuthur, Coimbatore.
 - **Direct Contact**: Instant calling, WhatsApp chat, and 24/7 travel support.
 - **Interactive Google Map**: Embedded interactive map with exact coordinates and Plus Code.
 
-### 📱 Responsive & Mobile-First Design
+### Responsive & Mobile-First Design
 - **Single-Line Action Buttons**: Engineered to prevent awkward button text breaks on mobile screens.
 - **Balanced Heights & Modern Glassmorphism**: Clean layouts, card alignments, and modern CSS tokens.
 - **Smooth Micro-Animations**: Scroll-triggered reveals and transitions powered by lightweight `IntersectionObserver`.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 Make sure you have Node.js installed on your machine:
@@ -71,7 +71,7 @@ Make sure you have Node.js installed on your machine:
 
 ---
 
-## 🛠️ Available Scripts
+## Available Scripts
 
 In the project directory, you can run:
 
@@ -84,7 +84,7 @@ In the project directory, you can run:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 gym-project14-main/
@@ -121,7 +121,7 @@ gym-project14-main/
 
 ---
 
-## 🧭 Page Routes
+## Page Routes
 
 | Route | Page Component | Description |
 | :--- | :--- | :--- |
@@ -138,7 +138,7 @@ gym-project14-main/
 
 ---
 
-## 🎨 Design System & Color Palette
+## Design System & Color Palette
 
 The project utilizes a modern and curated color system defined in `src/index.css`:
 
@@ -153,7 +153,7 @@ The project utilizes a modern and curated color system defined in `src/index.css
 
 ---
 
-## 🏢 Agency Information
+## Agency Information
 
 - **Company**: Spot Tours & Travels
 - **Location**: 8/95, Palakkad - Coimbatore Rd, near SBI Bank, Pulakadu, Kuniyamuthur, Coimbatore, Tamil Nadu 641008
@@ -163,8 +163,6 @@ The project utilizes a modern and curated color system defined in `src/index.css
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
-# Spot-Tours-and-Travels
-# Spot-Tours-and-Travels
